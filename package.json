@@ -8,7 +8,8 @@
     "build": "tsc -b && razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
-    "export": "razzle export"
+    "export": "razzle export",
+    "clean": "rm -rf build/ cache/"
   },
   "jest": {
     "moduleDirectories": [
