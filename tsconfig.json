@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react",
+    "baseUrl": "src",
+    "paths": {
+      "@core/*": ["../lib/core/*"],
+      "@domain/*": ["../lib/domain/*"],
+      "@infra/*": ["../lib/infra/*"],
+      "@util/*": ["../lib/util/*"]
+    }
+  },
+  "include": ["src"]
+}
