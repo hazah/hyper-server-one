@@ -1,1 +1,4 @@
-interface Window { env: { [envVariable: string]: string | number; } };
+interface Window { 
+  env: { [envVariable: string]: string | number; };
+  __WB_MANIFEST: any;
+};

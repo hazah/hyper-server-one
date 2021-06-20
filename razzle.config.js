@@ -1,4 +1,8 @@
 'use strict';
+
+const path = require('path');
+const Workbox = require('workbox-webpack-plugin');
+
 module.exports = {
   modifyOptions({
     webpackObject, // the imported webpack node module
@@ -64,6 +68,9 @@ module.exports = {
   }) {
     if (target === 'web') {
       // client only
+      webpackConfig.plugins.push(
+        new Workbox.InjectManifest({ swSrc: './src/service-worker.ts' })
+      );
     }
     if (target === 'node') {
       // server only
