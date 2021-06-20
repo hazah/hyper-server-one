@@ -38,10 +38,10 @@ const server = express()
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/service-worker.js', (req, res) => process.env.NODE_ENV === "production"
     ? res.sendFile(path.join(__dirname, '/service-worker.js'))
-    : res.type('text/javascript').send('function foo() {};'))
+    : res.type('text/javascript').send('//placeholder'))
   .get('/service-worker.js.map', (req, res) => process.env.NODE_ENV === "production"
     ? res.sendFile(path.join(__dirname, '/service-worker.js.map'))
-    : res.type('text/javascript').send('function foo() {};'))
+    : res.type('text/javascript').send('//placeholder'))
   .get('/*', Controller.create(ApplicationController));
 
 export default server;

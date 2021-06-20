@@ -68,9 +68,6 @@ module.exports = {
   }) {
     if (target === 'web') {
       // client only
-      webpackConfig.plugins.push(
-        new Workbox.InjectManifest({ swSrc: './src/service-worker.ts' })
-      );
     }
     if (target === 'node') {
       // server only
@@ -79,6 +76,11 @@ module.exports = {
       // dev only
     } else {
       // prod only
+    }
+    if (!dev && target === 'web') {
+      webpackConfig.plugins.push(
+        new Workbox.InjectManifest({ swSrc: './src/service-worker.ts' })
+      );
     }
     // Do some stuff...
     return webpackConfig;

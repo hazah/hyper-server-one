@@ -5,7 +5,9 @@ const config =
 
 export default config;
 
-const clientWhiteList = [];
+const clientWhiteList = [
+  'NODE_ENV'
+];
 
 export const filterConfigForClient = (config: { [envVariable: string]: string | number; }) => {
   return Object.keys(config)
