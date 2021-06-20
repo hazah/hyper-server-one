@@ -24,7 +24,7 @@ const AssetScripts = ({assets, entrypoint, extra = {}}: {assets: any, entrypoint
   }
 }
 
-const Document = ({ markup, assets, css }) => (
+const Document = ({ markup, assets, css, env }) => (
   <html lang="">
     <head>
       <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
@@ -36,6 +36,7 @@ const Document = ({ markup, assets, css }) => (
     </head>
     <body>
       <div id="root" dangerouslySetInnerHTML={{ __html: markup }}></div>
+      <script dangerouslySetInnerHTML={{ __html: `window.env = ${JSON.stringify(env)};`}}></script>
       <AssetScripts assets={assets} entrypoint={"client"} extra={{ defer: null, crossOrigin: null }}/>
     </body>
   </html>

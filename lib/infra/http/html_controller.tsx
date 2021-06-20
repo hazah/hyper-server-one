@@ -9,6 +9,7 @@ type CallbackType = (error?: Error, rendered?: string) => void;
 
 export default abstract class HtmlController extends Controller {
   protected static template: { [key: string]: FunctionComponent<{ markup: any; assets: any; }>};
+  protected env: any;
   protected assets: any;
   protected theme: any;
   protected app: FunctionComponent;
@@ -28,8 +29,8 @@ export default abstract class HtmlController extends Controller {
         const Template = HtmlController.template[fileName];
         
         if (Template) {
-          const { markup, assets } = options;
-          const props = { markup, assets };
+          const { markup, assets, css, env } = options;
+          const props = { markup, assets, css, env };
           return callback(null, `<!doctype html>${renderToString(<Template {...props}/>)}`);
         } else {
           return callback(null, options.markup);
@@ -71,10 +72,10 @@ export default abstract class HtmlController extends Controller {
       if (redirect) {
         this.res.redirect(redirect);
       } else {
-        const { assets } = this;
+        const { assets, env } = this;
         this.res.status(200);
         this.res.type("html");
-        this.res.render('Document', { markup, css, assets });
+        this.res.render('Document', { markup, css, assets, env });
       }
     } else {
       this.res.status(200);

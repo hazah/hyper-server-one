@@ -2,6 +2,8 @@ import express from 'express';
 import Controller from '@infra/http/controller';
 import HtmlController from '@infra/http/html_controller';
 
+import config, { filterConfigForClient } from 'config';
+
 import App from 'App';
 import Document from 'Document';
 
@@ -15,6 +17,7 @@ const syncLoadAssets = () => {
 syncLoadAssets();
 
 export class ApplicationController extends HtmlController {
+  protected env = filterConfigForClient(config);
   protected app = App;
   protected assets = assets;
   protected theme = theme;

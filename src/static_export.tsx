@@ -11,18 +11,18 @@ class StaticController extends ApplicationController {
     if (redirect) {
       this.redirect(redirect);
     } else {
-      const { assets } = this;
-      this.render('Document', { markup, css, assets });
+      const { assets, env } = this;
+      this.render('Document', { markup, css, assets, env });
     }
   }
 
-  private render(layout: string, options: { markup: string; css: string; assets: any; }) {
+  private render(layout: string, options: { markup: string; css: string; assets: any; env: any; }) {
     const Template = HtmlController.template[layout];
     let html: string;
 
     if (Template) {
-      const { markup, assets } = options;
-      const props = { markup, assets };
+      const { markup, assets, css, env } = options;
+      const props = { markup, assets, css, env };
       html = `<!doctype html>${renderToString(<Template {...props}/>)}`;
     } else {
       html = options.markup;
