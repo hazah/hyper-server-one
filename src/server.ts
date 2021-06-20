@@ -5,6 +5,7 @@ import HtmlController from '@infra/http/html_controller';
 import App from 'App';
 import Document from 'Document';
 
+import theme from 'theme';
 
 let assets: any;
 
@@ -16,6 +17,7 @@ syncLoadAssets();
 class ApplicationController extends HtmlController {
   protected app = App;
   protected assets = assets;
+  protected theme = theme;
 
   protected performAction(): void | Promise<void> {
     HtmlController.template = { 'Document': Document };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import '@fontsource/roboto';
 import Home from 'pages/Home';
 
 const App = () => (

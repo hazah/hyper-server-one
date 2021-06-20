@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import Controller from "./controller";
 import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
+import { ServerStyleSheets, ThemeProvider, CssBaseline } from '@material-ui/core';
 
 type EngineType = (path: string, options: any, callback: CallbackType) => Promise<void>;
 type CallbackType = (error?: Error, rendered?: string) => void;
@@ -9,6 +10,7 @@ type CallbackType = (error?: Error, rendered?: string) => void;
 export default abstract class HtmlController extends Controller {
   protected static template: { [key: string]: FunctionComponent<{ markup: any; assets: any; }>};
   protected assets: any;
+  protected theme: any;
   protected app: FunctionComponent;
 
   private send(code: number, message: string): void | Promise<void> {
@@ -38,33 +40,41 @@ export default abstract class HtmlController extends Controller {
     }
   }
 
-  protected async markup(): Promise<{ markup?: string, redirect?: string }> {
+  protected async markup(): Promise<{ markup?: string, css?: string, redirect?: string }> {
     const context: any = {};
     const App = this.app;
+    const sheets = new ServerStyleSheets();
 
     const markup = renderToString(
-      <StaticRouter context={context} location={this.req.url}>
-        <App />
-      </StaticRouter>
+      sheets.collect(
+        <ThemeProvider theme={this.theme}>
+          <CssBaseline/>
+          <StaticRouter context={context} location={this.req.url}>
+            <App />
+          </StaticRouter>
+        </ThemeProvider>
+      )
     );
+
+    const css = sheets.toString();
 
     if (context.url) {
       return { redirect: context.url };
     } else {
-      return { markup };
+      return { markup, css };
     }
   }
 
   protected async ok(withMarkup: boolean = true) {
     if (withMarkup) {
-      const { markup, redirect } = await this.markup();
+      const { markup, css, redirect } = await this.markup();
       if (redirect) {
         this.res.redirect(redirect);
       } else {
         const { assets } = this;
         this.res.status(200);
         this.res.type("html");
-        this.res.render('Document', { markup, assets });
+        this.res.render('Document', { markup, css, assets });
       }
     } else {
       this.res.status(200);
