@@ -14,7 +14,7 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
-class ApplicationController extends HtmlController {
+export class ApplicationController extends HtmlController {
   protected app = App;
   protected assets = assets;
   protected theme = theme;

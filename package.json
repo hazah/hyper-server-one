@@ -7,7 +7,8 @@
     "start": "concurrently \"yarn start:tsc\" \"razzle start\"",
     "build": "tsc -b && razzle build",
     "test": "razzle test --env=jsdom",
-    "start:prod": "NODE_ENV=production node build/server.js"
+    "start:prod": "NODE_ENV=production node build/server.js",
+    "export": "razzle export"
   },
   "jest": {
     "moduleDirectories": [
