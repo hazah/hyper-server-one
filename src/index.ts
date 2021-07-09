@@ -1,13 +1,13 @@
 import express from 'express';
 import morgan from 'morgan';
 
-let app = require('./server').default;
+let app = require('./frontend').default;
 
 if (module.hot) {
-  module.hot.accept('./server', () => {
-    console.log('🔁  HMR Reloading `./server`...');
+  module.hot.accept('./frontend', () => {
+    console.log('🔁  HMR Reloading `./frontend`...');
     try {
-      app = require('./server').default;
+      app = require('./frontend').default;
     } catch (error) {
       console.error(error);
     }

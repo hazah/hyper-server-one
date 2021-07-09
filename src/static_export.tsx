@@ -2,8 +2,10 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import HtmlController from "@infra/http/html_controller";
 
-import { ApplicationController } from "server";
+import { ApplicationController } from "frontend";
 import Controller from "@infra/http/controller";
+import { HashRouter, StaticRouter } from "react-router-dom";
+import { ServerStyleSheets, ThemeProvider, CssBaseline } from "@material-ui/core";
 
 class StaticController extends ApplicationController {
   protected async ok() {
@@ -43,5 +45,5 @@ export const render = (req, res) => {
 };
 
 export const routes = () => {
-  return ['/'];
+  return ['/', '/about'];
 };

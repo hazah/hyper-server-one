@@ -27,10 +27,11 @@ const AssetScripts = ({assets, entrypoint, extra = {}}: {assets: any, entrypoint
 const Document = ({ markup, assets, css, env }) => (
   <html lang="">
     <head>
+      <meta char-set='utf-8' />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
-      <meta charSet='utf-8' />
       <title>Welcome to Razzle</title>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      
       <AssetLinks assets={assets} entrypoint="client"/>
       <style id="jss-server-side" dangerouslySetInnerHTML={{ __html: css }}></style>
     </head>

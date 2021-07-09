@@ -1,3 +1,4 @@
+import isElectron from 'is-electron';
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -28,7 +29,7 @@ hydrate(
     if (window.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
       // Use the window load event to keep the page load performant
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js');
+        navigator.serviceWorker.register('./service-worker.js');
       });
     }
   }
