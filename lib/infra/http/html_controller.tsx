@@ -1,14 +1,27 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent } from "react";
+import axios from "axios";
 import Controller from "./controller";
 import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
-import { ServerStyleSheets, ThemeProvider, CssBaseline } from '@material-ui/core';
+import {
+  ServerStyleSheets,
+  ThemeProvider,
+  CssBaseline,
+} from "@material-ui/core";
+import config from "config";
 
-type EngineType = (path: string, options: any, callback: CallbackType) => Promise<void>;
+type EngineType = (
+  path: string,
+  options: any,
+  callback: CallbackType
+) => Promise<void>;
+
 type CallbackType = (error?: Error, rendered?: string) => void;
 
 export default abstract class HtmlController extends Controller {
-  protected static template: { [key: string]: FunctionComponent<{ markup: any; assets: any; }>};
+  protected static template: {
+    [key: string]: FunctionComponent<{ markup: any; assets: any }>;
+  };
   protected env: any;
   protected assets: any;
   protected theme: any;
@@ -23,25 +36,32 @@ export default abstract class HtmlController extends Controller {
       try {
         const parts = path.split("/");
         const file = parts[parts.length - 1];
-        const fileParts = file.split('.');
+        const fileParts = file.split(".");
         const fileName = fileParts[0];
-        
+
         const Template = HtmlController.template[fileName];
-        
+
         if (Template) {
           const { markup, assets, css, env } = options;
           const props = { markup, assets, css, env };
-          return callback(null, `<!doctype html>${renderToString(<Template {...props}/>)}`);
+          return callback(
+            null,
+            `<!doctype html>${renderToString(<Template {...props} />)}`
+          );
         } else {
           return callback(null, options.markup);
         }
       } catch (error) {
         return callback(error);
       }
-    }
+    };
   }
 
-  protected async markup(): Promise<{ markup?: string, css?: string, redirect?: string }> {
+  protected async markup(): Promise<{
+    markup?: string;
+    css?: string;
+    redirect?: string;
+  }> {
     const context: any = {};
     const App = this.app;
     const sheets = new ServerStyleSheets();
@@ -49,7 +69,7 @@ export default abstract class HtmlController extends Controller {
     const markup = renderToString(
       sheets.collect(
         <ThemeProvider theme={this.theme}>
-          <CssBaseline/>
+          <CssBaseline />
           <StaticRouter context={context} location={this.req.url}>
             <App />
           </StaticRouter>
@@ -57,7 +77,14 @@ export default abstract class HtmlController extends Controller {
       )
     );
 
-    const css = sheets.toString();
+    const font_css =
+      config.NODE_ENV === "development"
+        ? await axios.get(
+            "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          )
+        : { data: "" };
+
+    const css = `${font_css.data}${sheets.toString()}`;
 
     if (context.url) {
       return { redirect: context.url };
@@ -75,7 +102,7 @@ export default abstract class HtmlController extends Controller {
         const { assets, env } = this;
         this.res.status(200);
         this.res.type("html");
-        this.res.render('Document', { markup, css, assets, env });
+        this.res.render("Document", { markup, css, assets, env });
       }
     } else {
       this.res.status(200);

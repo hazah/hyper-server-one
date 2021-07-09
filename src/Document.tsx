@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import config from 'config';
 
 const AssetLinks = ({assets, entrypoint}: {assets: any, entrypoint: string}) => {
   if (assets[entrypoint] && assets[entrypoint].css) {
@@ -31,14 +32,15 @@ const Document = ({ markup, assets, css, env }) => (
       <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
       <title>Welcome to Razzle</title>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
-      
       <AssetLinks assets={assets} entrypoint="client"/>
       <style id="jss-server-side" dangerouslySetInnerHTML={{ __html: css }}></style>
     </head>
     <body>
       <div id="root" dangerouslySetInnerHTML={{ __html: markup }}></div>
-      <script dangerouslySetInnerHTML={{ __html: `window.env = ${JSON.stringify(env)};`}}></script>
-      <AssetScripts assets={assets} entrypoint={"client"} extra={{ defer: null, crossOrigin: null }}/>
+      <script dangerouslySetInnerHTML={{ __html: `
+        window.env = ${JSON.stringify(env)};
+      `}}></script>
+      {config.MODE !== 'server' && <AssetScripts assets={assets} entrypoint={"client"} extra={{ defer: null, crossOrigin: null }}/>}
     </body>
   </html>
 );

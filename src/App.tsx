@@ -1,11 +1,11 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import '@fontsource/roboto';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import "@fontsource/roboto";
 
-import Home from 'screens/Home';
-import About from 'screens/About';
+import Home from "screens/Home";
+import About from "screens/About";
 
-import Navigation from 'Navigation';
+import Navigation from "Navigation";
 
 const Router = () => (
   <Switch>
@@ -16,9 +16,9 @@ const Router = () => (
 
 const App = () => (
   <>
-    <Navigation/>
-    <Router/>
+    <Navigation />
+    <Router />
   </>
-)
+);
 
 export default App;

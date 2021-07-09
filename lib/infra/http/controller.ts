@@ -4,29 +4,24 @@ import { ParamsDictionary } from "express-serve-static-core";
 type HandlerType = (req: Request, res: Response) => void | Promise<void>;
 
 export default abstract class Controller {
-
   public static create(Constructor: any): HandlerType {
     return (req: Request, res: Response) => {
       const controller = new Constructor(req, res);
 
       controller.performAction();
-    }
+    };
   }
-  
+
   protected get params(): ParamsDictionary {
     return this.req.params;
   }
 
-  protected constructor(
-    protected req: Request,
-    protected res: Response
-  ) {
-  }
+  protected constructor(protected req: Request, protected res: Response) {}
 
   protected abstract performAction(): void | Promise<void>;
 
   protected abstract ok(withMarkup: boolean): void | Promise<void>;
-  protected abstract ok<T> (dto?: T): void | Promise<void>;
+  protected abstract ok<T>(dto?: T): void | Promise<void>;
 
   protected abstract created(): void | Promise<void>;
 

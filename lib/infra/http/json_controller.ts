@@ -2,10 +2,10 @@ import Controller from "./controller";
 
 export default abstract class JsonController extends Controller {
   private json(code: number, message: string) {
-    this.res.status(code).json({ message })
+    this.res.status(code).json({ message });
   }
 
-  protected ok<T> (dto?: T) {
+  protected ok<T>(dto?: T) {
     if (!!dto) {
       this.res.type("application/json");
       this.res.status(200).json(dto);

@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const path = require('path');
-const Workbox = require('workbox-webpack-plugin');
+const path = require("path");
+const Workbox = require("workbox-webpack-plugin");
 
 module.exports = {
   modifyOptions({
@@ -38,10 +38,10 @@ module.exports = {
     },
     paths, // the modified paths that will be used by Razzle.
   }) {
-    if (target === 'web') {
+    if (target === "web") {
       // client only
     }
-    if (target === 'node') {
+    if (target === "node") {
       // server only
     }
     if (dev) {
@@ -66,10 +66,10 @@ module.exports = {
     },
     paths, // the modified paths that will be used by Razzle.
   }) {
-    if (target === 'web') {
+    if (target === "web") {
       // client only
     }
-    if (target === 'node') {
+    if (target === "node") {
       // server only
     }
     if (dev) {
@@ -77,9 +77,9 @@ module.exports = {
     } else {
       // prod only
     }
-    if (!dev && target === 'web') {
+    if (!dev && target === "web") {
       webpackConfig.plugins.push(
-        new Workbox.InjectManifest({ swSrc: './src/service-worker.ts' })
+        new Workbox.InjectManifest({ swSrc: "./src/service-worker.ts" })
       );
     }
     // Do some stuff...
