@@ -78,8 +78,10 @@ export default abstract class HtmlController extends Controller {
     );
 
     const font_css =
-      config.NODE_ENV === "development"
+      config.NODE_ENV !== "development"
         ? await axios.get(
+            // development mode doesn't generate a seperate css file, which means we don't
+            // get fonts.
             "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           )
         : { data: "" };

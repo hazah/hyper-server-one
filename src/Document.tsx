@@ -32,7 +32,10 @@ const Document = ({ markup, assets, css, env }) => (
       <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
       <title>Welcome to Razzle</title>
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
-      <AssetLinks assets={assets} entrypoint="client"/>
+      <AssetLinks assets={assets} entrypoint={"client"}/>
+      {config.MODE !== "server" && 
+        config.NODE_ENV !== "production" && 
+        <link id="server-side-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>}
       <style id="jss-server-side" dangerouslySetInnerHTML={{ __html: css }}></style>
     </head>
     <body>
@@ -40,7 +43,7 @@ const Document = ({ markup, assets, css, env }) => (
       <script dangerouslySetInnerHTML={{ __html: `
         window.env = ${JSON.stringify(env)};
       `}}></script>
-      {config.MODE !== 'server' && <AssetScripts assets={assets} entrypoint={"client"} extra={{ defer: null, crossOrigin: null }}/>}
+      <AssetScripts assets={assets} entrypoint={"client"} extra={{ defer: null, crossOrigin: null }}/>
     </body>
   </html>
 );

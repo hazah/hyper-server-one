@@ -1,6 +1,10 @@
+/* jshint -W097  */
+/* jshint -W117  */
+/* jshint esversion: 6 */
 "use strict";
 
 const path = require("path");
+const webpack = require("webpack");
 const Workbox = require("workbox-webpack-plugin");
 
 module.exports = {
@@ -68,20 +72,36 @@ module.exports = {
   }) {
     if (target === "web") {
       // client only
+      if (process.env.MODE === "server") {
+        webpackConfig.entry.client = path.join(__dirname, '/src/server_client');
+      }
     }
     if (target === "node") {
       // server only
+      webpackConfig.plugins.push(
+        new webpack.EnvironmentPlugin(['MODE', 'NODE_ENV'])
+      );
     }
     if (dev) {
       // dev only
     } else {
       // prod only
     }
-    if (!dev && target === "web") {
-      webpackConfig.plugins.push(
-        new Workbox.InjectManifest({ swSrc: "./src/service-worker.ts" })
-      );
-    }
+    
+    // webpackConfig.plugins.push(
+    //   new Workbox.InjectManifest({ 
+    //     swSrc: "./src/service_worker.ts",
+    //     swDest: "public/service_worker.js",
+    //     modifyURLPrefix: {
+    //       "/public": "",
+    //     },
+    //     exclude: [
+    //       "server.js",
+    //       "static_export.js",
+    //     ],
+    //   })
+    // );
+    
     // Do some stuff...
     return webpackConfig;
   },

@@ -1,5 +1,11 @@
 const config =
-  typeof window !== "undefined" ? { ...window.env } : { ...process.env };
+  typeof window !== "undefined" ? { 
+    NODE_ENV: window.env.NODE_ENV, 
+    MODE: window.env.MODE,
+  } : { 
+    NODE_ENV: process.env.NODE_ENV,
+    MODE: process.env.MODE,
+  };
 
 export default config;
 
