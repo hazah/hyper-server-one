@@ -1,4 +1,4 @@
-/*jshint esversion: 6*/
+/* jshint esversion: 6 */
 
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
