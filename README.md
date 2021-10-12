@@ -1,5 +1,13 @@
 # Hyper Server #1
 
+## Prerequisites
+
+- npm
+
+```bash
+npm install -g yarn
+```
+
 ## How to use
 
 <!-- START install generated instructions please keep comment here to allow auto update -->
