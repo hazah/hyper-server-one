@@ -5,8 +5,8 @@ import HtmlController from "@infra/http/html_controller";
 
 import config, { filterConfigForClient } from "config";
 
-import App from "App";
-import Document from "Document";
+import App from "app/App";
+import Document from "app/Document";
 
 import theme from "theme";
 
