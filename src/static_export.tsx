@@ -1,6 +1,6 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
-import HtmlController from "@infra/http/html_controller";
+import HtmlController from "@infra/http/formats/html_controller";
 
 import { ApplicationController } from "@server/frontend";
 import Controller from "@infra/http/controller";

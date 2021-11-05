@@ -1,7 +1,6 @@
 import express from "express";
-import path from "path";
 import Controller from "@infra/http/controller";
-import HtmlController from "@infra/http/html_controller";
+import HtmlController from "@infra/http/formats/html_controller";
 
 import config, { filterConfigForClient } from "config";
 

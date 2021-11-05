@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import axios from "axios";
-import Controller from "./controller";
+import Controller from "../controller";
 import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
 import {
