@@ -1,5 +1,14 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 
-const About = () => <div>About this and that.</div>;
+const About = () => (
+  <>
+    <Helmet>
+      <title>About</title>
+    </Helmet>
+
+    <div>About this and that.</div>
+  </>
+);
 
 export default About;
