@@ -19,7 +19,10 @@
       "@core/*": ["../lib/core/*"],
       "@domain/*": ["../lib/domain/*"],
       "@infra/*": ["../lib/infra/*"],
-      "@util/*": ["../lib/util/*"]
+      "@util/*": ["../lib/util/*"],
+      "@app/*": ["app/*"],
+      "@client/*": ["client/*"],
+      "@server/*": ["server/*"]
     }
   },
   "include": ["src"]

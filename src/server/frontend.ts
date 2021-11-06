@@ -1,12 +1,11 @@
 import express from "express";
-import path from "path";
 import Controller from "@infra/http/controller";
-import HtmlController from "@infra/http/html_controller";
+import HtmlController from "@infra/http/formats/html_controller";
 
 import config, { filterConfigForClient } from "config";
 
-import App from "app/App";
-import Document from "app/Document";
+import App from "@app/App";
+import Document from "@app/Document";
 
 import theme from "theme";
 
@@ -32,7 +31,7 @@ export class ApplicationController extends HtmlController {
 
 const server = express()
   .engine("tsx", ApplicationController.engine())
-  .set("views", "./src")
+  .set("views", "src/app")
   .set("view engine", "tsx")
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))

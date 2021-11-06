@@ -1,4 +1,4 @@
-import Controller from "./controller";
+import Controller from "../controller";
 
 export default abstract class JsonController extends Controller {
   private json(code: number, message: string) {
