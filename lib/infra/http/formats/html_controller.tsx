@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import axios from "axios";
 import Controller from "../controller";
 import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
+import { Helmet } from "react-helmet";
 import {
   ServerStyleSheets,
   ThemeProvider,
@@ -42,8 +43,8 @@ export default abstract class HtmlController extends Controller {
         const Template = HtmlController.template[fileName];
 
         if (Template) {
-          const { markup, assets, css, env } = options;
-          const props = { markup, assets, css, env };
+          const { title, markup, assets, css, env } = options;
+          const props = { title, markup, assets, css, env };
           return callback(
             null,
             `<!doctype html>${renderToString(<Template {...props} />)}`
@@ -58,6 +59,7 @@ export default abstract class HtmlController extends Controller {
   }
 
   protected async markup(): Promise<{
+    title?: ReactElement;
     markup?: string;
     css?: string;
     redirect?: string;
@@ -77,6 +79,10 @@ export default abstract class HtmlController extends Controller {
       )
     );
 
+    const helmet = Helmet.renderStatic();
+
+    const title = helmet.title.toComponent();
+
     const font_css =
       config.NODE_ENV !== "development"
         ? await axios.get(
@@ -91,20 +97,20 @@ export default abstract class HtmlController extends Controller {
     if (context.url) {
       return { redirect: context.url };
     } else {
-      return { markup, css };
+      return { title, markup, css };
     }
   }
 
   protected async ok(withMarkup: boolean = true) {
     if (withMarkup) {
-      const { markup, css, redirect } = await this.markup();
+      const { title, markup, css, redirect } = await this.markup();
       if (redirect) {
         this.res.redirect(redirect);
       } else {
         const { assets, env } = this;
         this.res.status(200);
         this.res.type("html");
-        this.res.render("Document", { markup, css, assets, env });
+        this.res.render("Document", { title, markup, css, assets, env });
       }
     } else {
       this.res.status(200);

@@ -57,6 +57,7 @@
     "@types/passport-local": "^1.0.34",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.1.4",
     "@types/webpack-env": "^1.15.2",
     "babel-preset-razzle": "4.0.4",

@@ -25,12 +25,12 @@ const AssetScripts = ({assets, entrypoint, extra = {}}: {assets: any, entrypoint
   }
 }
 
-const Document = ({ markup, assets, css, env }) => (
+const Document = ({ title, markup, assets, css, env }) => (
   <html lang="">
     <head>
       <meta char-set='utf-8' />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
-      <title>Welcome to Razzle</title>
+      {title}
       <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <AssetLinks assets={assets} entrypoint={"client"}/>
       {config.MODE !== "server" && 
