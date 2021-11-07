@@ -6,7 +6,7 @@ import App from "@app/App";
 import i18n from "i18n";
 
 let getByText;
-let initialEntries = ["/"];
+let initialEntries;
 
 const { homeTitle, aboutTitle } = i18n.getDataByLanguage('en').translation;
 
@@ -18,6 +18,7 @@ beforeEach(() => {
   );
   
   getByText = renderResult.getByText;
+  initialEntries = ["/"];
 });
 
 test("starts on home screen", () => {
