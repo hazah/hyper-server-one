@@ -25,8 +25,8 @@ const AssetScripts = ({assets, entrypoint, extra = {}}: {assets: any, entrypoint
   }
 }
 
-const Document = ({ title, markup, assets, css, env }) => (
-  <html lang="">
+const Document = ({ htmlAttrs, bodyAttrs, title, markup, assets, css, env }) => (
+  <html lang="" {...htmlAttrs}>
     <head>
       <meta char-set='utf-8' />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
@@ -38,7 +38,7 @@ const Document = ({ title, markup, assets, css, env }) => (
         <link id="server-side-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>}
       <style id="jss-server-side" dangerouslySetInnerHTML={{ __html: css }}></style>
     </head>
-    <body>
+    <body {...bodyAttrs}>
       <div id="root" dangerouslySetInnerHTML={{ __html: markup }}></div>
       <script dangerouslySetInnerHTML={{ __html: `
         window.env = ${JSON.stringify(env)};

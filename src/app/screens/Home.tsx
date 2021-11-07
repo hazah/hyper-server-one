@@ -1,14 +1,19 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 
-const Home = () => (
-  <>
-    <Helmet>
-      <title>Home</title>
-    </Helmet>
+import { useTranslation } from "react-i18next";
 
-    <div>Hello World!</div>
-  </>
-);
+const Home = () => {
+  const { t } = useTranslation();
+  return (
+    <main>
+      <Helmet>
+        <title>{t('homeTitle')}</title>
+      </Helmet>
+
+      <h1>{t('homeTitle')}</h1>
+    </main>
+  );
+}
 
 export default Home;

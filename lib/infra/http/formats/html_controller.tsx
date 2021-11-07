@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import axios from "axios";
 import Controller from "../controller";
 import { StaticRouter } from "react-router-dom";
@@ -43,8 +43,8 @@ export default abstract class HtmlController extends Controller {
         const Template = HtmlController.template[fileName];
 
         if (Template) {
-          const { title, markup, assets, css, env } = options;
-          const props = { title, markup, assets, css, env };
+          const { htmlAttrs, bodyAttrs, title, markup, assets, css, env } = options;
+          const props = { htmlAttrs, bodyAttrs, title, markup, assets, css, env };
           return callback(
             null,
             `<!doctype html>${renderToString(<Template {...props} />)}`
@@ -60,6 +60,8 @@ export default abstract class HtmlController extends Controller {
 
   protected async markup(): Promise<{
     title?: ReactElement;
+    htmlAttrs?: HTMLAttributes<HTMLHtmlElement>;
+    bodyAttrs?: HTMLAttributes<HTMLBodyElement>;
     markup?: string;
     css?: string;
     redirect?: string;
@@ -81,6 +83,8 @@ export default abstract class HtmlController extends Controller {
 
     const helmet = Helmet.renderStatic();
 
+    const htmlAttrs = helmet.htmlAttributes.toComponent();
+    const bodyAttrs = helmet.bodyAttributes.toComponent();
     const title = helmet.title.toComponent();
 
     const font_css =
@@ -97,7 +101,7 @@ export default abstract class HtmlController extends Controller {
     if (context.url) {
       return { redirect: context.url };
     } else {
-      return { title, markup, css };
+      return { htmlAttrs, bodyAttrs, title, markup, css };
     }
   }
 

@@ -22,7 +22,8 @@
       "^@core/(.*)": "<rootDir>/lib/core/$1",
       "^@domain/(.*)": "<rootDir>/lib/domain/$1",
       "^@infra/(.*)": "<rootDir>/lib/infra/$1",
-      "^@util/(.*)": "<rootDir>/lib/util/$1"
+      "^@util/(.*)": "<rootDir>/lib/util/$1",
+      "^@app/(.*)": "<rootDir>/src/app/$1"
     }
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
     "express": "^4.17.1",
+    "i18next": "^21.4.0",
     "is-electron": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
@@ -41,6 +43,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
+    "react-i18next": "^11.13.0",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {

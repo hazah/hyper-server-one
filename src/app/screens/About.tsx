@@ -1,14 +1,19 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 
-const About = () => (
-  <>
-    <Helmet>
-      <title>About</title>
-    </Helmet>
+import { useTranslation } from "react-i18next";
 
-    <div>About this and that.</div>
-  </>
-);
+const About = () => {
+  const { t } = useTranslation();
+  return (
+    <main>
+      <Helmet>
+        <title>{t('aboutTitle')}</title>
+      </Helmet>
+
+      <h1>{t('aboutTitle')}</h1>
+    </main>
+  );
+}
 
 export default About;
