@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { BaseSyntheticEvent, FunctionComponent } from "react";
 import PropTypes from "prop-types";
 import { useForm, SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 
@@ -7,7 +7,10 @@ type FormFields = {
   password?: string;
 };
 
-type AccessHandler = (email?: string, password?: string) => void | Promise<void>;
+type EmailPasswordHandler = (email?: string, password?: string) => void | Promise<void>;
+type LogoutHandler = () => void | Promise<void>;
+
+type AccessHandler = EmailPasswordHandler | LogoutHandler;
 
 
 export type AccessFormProps = {
@@ -15,7 +18,7 @@ export type AccessFormProps = {
   user?: {} | { email: string, password: string };
 };
 
-function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<FormFields>) {
+function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<FormFields>): (e?: BaseSyntheticEvent<object, any, any>) => Promise<void> {
   const onSubmit: SubmitHandler<FormFields> = data => {
     const { email, password } = data;
     if (email && password) {
@@ -35,7 +38,7 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: Acce
   return (
     <form onSubmit={useSubmitter(onSubmit, handleSubmit)}>
       {(!user || !("email" in user)) && (
-        <main>
+        <aside>
           <section>
             <label>
               <strong>email</strong>
@@ -50,7 +53,7 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: Acce
               {errors.password && <span>{errors.password.message}</span>}
             </label>
           </section>
-        </main>
+        </aside>
       )}
       <button type="submit">{user && (("email" in user) ? "logout" : "login") || "register"}</button>
     </form>
