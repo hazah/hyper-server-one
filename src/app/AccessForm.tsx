@@ -1,47 +1,75 @@
-import React, { ChangeEvent, FormEvent, FunctionComponent, useCallback, useState } from "react";
+import React, { FunctionComponent } from "react";
 import PropTypes from "prop-types";
+import { useForm, SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 
-export type AccessFormProps = {
-  onSubmit: (email: string, password: string) => void;
+type FormFields = {
+  email?: string;
+  password?: string;
 };
 
-function useSetter(setter: React.Dispatch<React.SetStateAction<string>>) {
-  return useCallback((event: ChangeEvent<HTMLInputElement>) => setter(event.target.value), []);
+type AccessHandler = (email?: string, password?: string) => void | Promise<void>;
+
+
+export type AccessFormProps = {
+  onSubmit: AccessHandler;
+  user?: {} | { email: string, password: string };
+};
+
+function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<FormFields>) {
+  const onSubmit: SubmitHandler<FormFields> = data => {
+    const { email, password } = data;
+    if (email && password) {
+      submitter(email, password);
+    } else {
+      submitter();
+    }
+  };
+
+  return handler(onSubmit);
 }
 
-function useSubmitter(submitter: (email: string, password: string) => void, email: string, password: string) {
-  return useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    submitter(email, password);
-  }, [email, password]);
-}
 
-const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit }: AccessFormProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: AccessFormProps) => {
+  const { register, formState: { errors }, handleSubmit } = useForm<FormFields>();
 
   return (
-    <form onSubmit={useSubmitter(onSubmit, email, password)}>
-      <section>
-        <label>
-          <strong>email</strong>
-          <input name="email" value={email} onChange={useSetter(setEmail)}/>
-        </label>
-      </section>
-      <section>  
-        <label>
-          <strong>password</strong>
-          <input name="password" value={password} type="password" onChange={useSetter(setPassword)}/>
-        </label>
-      </section>
-
-      <button type="submit">login</button>
+    <form onSubmit={useSubmitter(onSubmit, handleSubmit)}>
+      {(!user || !("email" in user)) && (
+        <main>
+          <section>
+            <label>
+              <strong>email</strong>
+              <input {...register("email", { required: true })} type="email" />
+              {errors.email && <span>{errors.email.message}</span>}
+            </label>
+          </section>
+          <section>
+            <label>
+              <strong>password</strong>
+              <input {...register("password", { required: true })} type="passowrd" />
+              {errors.password && <span>{errors.password.message}</span>}
+            </label>
+          </section>
+        </main>
+      )}
+      <button type="submit">{user && (("email" in user) ? "logout" : "login") || "register"}</button>
     </form>
   );
 }
 
 AccessForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  user: PropTypes.oneOfType([
+    PropTypes.shape({}),
+    PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      password: PropTypes.string.isRequired
+    })
+  ])
 };
+
+AccessForm.defaultProps = {
+  user: undefined
+}
 
 export default AccessForm;

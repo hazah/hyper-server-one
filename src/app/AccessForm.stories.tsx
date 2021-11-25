@@ -20,9 +20,11 @@ RegisterForm.args = {
 export const LoginForm = FormTemplate.bind({});
 
 LoginForm.args = {
+  user: {}
 };
 
 export const LogoutForm = FormTemplate.bind({});
 
 LogoutForm.args = {
+  user: { email: "john.smith@example.com" }
 };
