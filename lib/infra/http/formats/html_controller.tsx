@@ -3,7 +3,7 @@ import axios from "axios";
 import Controller from "../controller";
 import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetData } from "react-helmet";
 import {
   ServerStyleSheets,
   ThemeProvider,
@@ -43,8 +43,8 @@ export default abstract class HtmlController extends Controller {
         const Template = HtmlController.template[fileName];
 
         if (Template) {
-          const { htmlAttrs, bodyAttrs, title, markup, assets, css, env } = options;
-          const props = { htmlAttrs, bodyAttrs, title, markup, assets, css, env };
+          const { helmet, markup, assets, css, env } = options;
+          const props = { helmet, markup, assets, css, env };
           return callback(
             null,
             `<!doctype html>${renderToString(<Template {...props} />)}`
@@ -59,9 +59,7 @@ export default abstract class HtmlController extends Controller {
   }
 
   protected async markup(): Promise<{
-    title?: ReactElement;
-    htmlAttrs?: HTMLAttributes<HTMLHtmlElement>;
-    bodyAttrs?: HTMLAttributes<HTMLBodyElement>;
+    helmet?: HelmetData;
     markup?: string;
     css?: string;
     redirect?: string;
@@ -83,10 +81,6 @@ export default abstract class HtmlController extends Controller {
 
     const helmet = Helmet.renderStatic();
 
-    const htmlAttrs = helmet.htmlAttributes.toComponent();
-    const bodyAttrs = helmet.bodyAttributes.toComponent();
-    const title = helmet.title.toComponent();
-
     const font_css =
       config.NODE_ENV !== "development"
         ? await axios.get(
@@ -101,20 +95,20 @@ export default abstract class HtmlController extends Controller {
     if (context.url) {
       return { redirect: context.url };
     } else {
-      return { htmlAttrs, bodyAttrs, title, markup, css };
+      return { helmet, markup, css };
     }
   }
 
   protected async ok(withMarkup: boolean = true) {
     if (withMarkup) {
-      const { title, markup, css, redirect } = await this.markup();
+      const { helmet, markup, css, redirect } = await this.markup();
       if (redirect) {
         this.res.redirect(redirect);
       } else {
         const { assets, env } = this;
         this.res.status(200);
         this.res.type("html");
-        this.res.render("Document", { title, markup, css, assets, env });
+        this.res.render("Document", { helmet, markup, css, assets, env });
       }
     } else {
       this.res.status(200);
