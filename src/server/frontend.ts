@@ -1,4 +1,6 @@
 import express from "express";
+import bodyParser from "body-parser";
+import methodOverride from "method-override";
 import Controller from "@infra/http/controller";
 import HtmlController from "@infra/http/formats/html_controller";
 
@@ -35,6 +37,14 @@ const server = express()
   .set("view engine", "tsx")
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
+  .use(bodyParser.urlencoded())
+  .use(methodOverride(function (req) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      const method = req.body._method
+      delete req.body._method
+      return method
+    }
+  }))
   .get("/*", Controller.create(ApplicationController));
 
 export default server;

@@ -11,11 +11,11 @@ type EmailPasswordHandler = (email?: string, password?: string) => void | Promis
 type LogoutHandler = () => void | Promise<void>;
 
 type AccessHandler = EmailPasswordHandler | LogoutHandler;
-
+type User = {} | { email: string, password: string };
 
 export type AccessFormProps = {
   onSubmit: AccessHandler;
-  user?: {} | { email: string, password: string };
+  user?: User;
 };
 
 function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<FormFields>): (e?: BaseSyntheticEvent<object, any, any>) => Promise<void> {
@@ -31,12 +31,20 @@ function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<For
   return handler(onSubmit);
 }
 
+function formActionName(user?: User): string {
+  return user && (("email" in user) ? "eject" : "authenticate") || "register";
+}
+
+function formMethod(user: User): string {
+  return user && (("email" in user) ? "delete" : "post") || "post";
+}
 
 const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: AccessFormProps) => {
   const { register, formState: { errors }, handleSubmit } = useForm<FormFields>();
 
   return (
-    <form onSubmit={useSubmitter(onSubmit, handleSubmit)}>
+    <form onSubmit={useSubmitter(onSubmit, handleSubmit)} method="post">
+      <input type="hidden" name="_method" value={formMethod(user)}/>
       {(!user || !("email" in user)) && (
         <aside>
           <section>
@@ -55,7 +63,7 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: Acce
           </section>
         </aside>
       )}
-      <button type="submit">{user && (("email" in user) ? "logout" : "login") || "register"}</button>
+      <button type="submit">{formActionName(user)}</button>
     </form>
   );
 }

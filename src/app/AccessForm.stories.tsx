@@ -12,19 +12,19 @@ export default {
 
 const FormTemplate: Story<AccessFormProps> = args => <AccessForm {...args}/>;
 
-export const RegisterForm = FormTemplate.bind({});
+export const RegisterationForm = FormTemplate.bind({});
 
-RegisterForm.args = {
+RegisterationForm.args = {
 };
 
-export const LoginForm = FormTemplate.bind({});
+export const AuthenticationForm = FormTemplate.bind({});
 
-LoginForm.args = {
+AuthenticationForm.args = {
   user: {}
 };
 
-export const LogoutForm = FormTemplate.bind({});
+export const EjectionForm = FormTemplate.bind({});
 
-LogoutForm.args = {
+EjectionForm.args = {
   user: { email: "john.smith@example.com" }
 };
