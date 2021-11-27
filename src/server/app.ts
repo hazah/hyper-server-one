@@ -1,11 +1,11 @@
 import express from "express";
+import i18next from "i18next-http-middleware";
 import methodOverride from "method-override";
+
+import i18n from "i18n";
 import routes from "router";
 
 const app = express()
-  // .engine("tsx", ApplicationController.engine())
-  // .set("views", "src/app")
-  // .set("view engine", "tsx")
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .use(express.urlencoded({ extended: true }))
@@ -16,7 +16,7 @@ const app = express()
       return method
     }
   }))
+  .use(i18next.handle(i18n))
   .use(...routes);
-  // .get("/*", Controller.create(ApplicationController));
 
 export default app;

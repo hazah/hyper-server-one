@@ -1,7 +1,9 @@
 import i18n from "i18next";
+import middleware from "i18next-http-middleware";
 import { initReactI18next } from "react-i18next";
 
 i18n
+  .use(middleware.LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {

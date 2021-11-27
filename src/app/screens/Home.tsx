@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 
 import { useTranslation } from "react-i18next";
 
-const Home = () => {
+const Home = ({ url }) => {
   const { t } = useTranslation();
   return (
     <main>
@@ -12,6 +12,7 @@ const Home = () => {
       </Helmet>
 
       <h1>{t('homeTitle')}</h1>
+      <p>{url}</p>
     </main>
   );
 }

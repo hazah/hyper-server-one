@@ -57,7 +57,7 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: Acce
           <section>
             <label>
               <strong>password</strong>
-              <input {...register("password", { required: true })} type="passowrd" />
+              <input {...register("password", { required: true })} type="password" />
               {errors.password && <span>{errors.password.message}</span>}
             </label>
           </section>
