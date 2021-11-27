@@ -12,7 +12,13 @@ function fresh(req: Request, res: Response, next) {
         if (error) {
           next(error);
         } else {
-          res.render('Application', { html, static: true });
+          res.render('Application', { html, static: true }, (error, html) => {
+            if (error) {
+              next(error);
+            } else {
+              res.send(`<!DOCTYPE html>${html}`);
+            }
+          });
         }
       });
     }
