@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { createContext, ReactElement, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import authenticator from '@client/auth';

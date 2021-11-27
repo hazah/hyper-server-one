@@ -8,7 +8,9 @@ i18n
       en: {
         translation: {
           homeTitle: "Home",
-          aboutTitle: "About"
+          aboutTitle: "About",
+          loginTitle: "Login",
+          registerTitle: "Register",
         }
       }
     },

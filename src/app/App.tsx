@@ -9,11 +9,9 @@ import "i18n";
 
 const App = () => (
   <>
+    <AccessForm onSubmit={() => null} user={{ email: "foo" }}/>
     <Navigation />
     <Router />
-    <AccessForm onSubmit={() => null}/>
-    <AccessForm onSubmit={() => null} user={{}}/>
-    <AccessForm onSubmit={() => null} user={{ email: "foo" }}/>
   </>
 );
 
