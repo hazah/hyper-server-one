@@ -7,6 +7,8 @@ export default async function jsxEngine(path: string, options: any, callback: (e
     const Component = require(`@app/${path.substring(0, path.length - 4).split("/app/")[1]}`).default;
     const isStatic = !!options.static;
 
+    delete options.static;
+
     callback(
       null,
       isStatic  ? renderToStaticMarkup(<Component {...options}/>) 
