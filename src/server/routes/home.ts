@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from "express";
 
 import renderer from "renderer";
 
-function get(req: Request, res: Response, next) {
+function display(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
@@ -19,13 +19,13 @@ function get(req: Request, res: Response, next) {
 
 const router = Router()
 
-const route = router.route('/')
-  .get(get);
+router.route('/')
+  .get(display);
 
-const index = express()
+const home = express()
   .engine("tsx", renderer)
   .set("views", "src/app/screens")
   .set("view engine", "tsx")
   .use(router);
 
-export default index;
+export default home;

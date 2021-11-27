@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from "express";
 
 import renderer from "renderer";
 
-function get(req: Request, res: Response, next) {
+function display(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
@@ -20,7 +20,7 @@ function get(req: Request, res: Response, next) {
 const router = Router()
 
 router.route('/about')
-  .get(get);
+  .get(display);
 
 const index = express()
   .engine("tsx", renderer)

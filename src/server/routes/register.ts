@@ -4,7 +4,7 @@ import renderer from "renderer";
 
 const router = Router();
 
-function get(req: Request, res: Response, next) {
+function fresh(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
@@ -19,13 +19,13 @@ function get(req: Request, res: Response, next) {
   });
 }
 
-function post(req: Request, res: Response) {
+function make(req: Request, res: Response) {
   res.end(req.url);
 }
 
 router.route('/register')
-  .get(get)
-  .post(post);
+  .get(fresh)
+  .post(make);
 
 const index = express()
   .engine("tsx", renderer)
