@@ -4,6 +4,7 @@ import express from "express";
 import Route from "@infra/http/route";
 
 type Builder = (methods: any) => void;
+type Verb = (module: any) => any;
 
 class Router {
   private routes: Route[] = [];
@@ -36,7 +37,7 @@ class Router {
     return null;
   }
 
-  private root(name: string, verb: (module: any) => any) {
+  private root(name: string, verb: Verb) {
     const module = require(`@server/routes/${name}`);
     const { handler, path } = verb(module);
     const route = new Route(name, { mappings: {
@@ -47,7 +48,7 @@ class Router {
     this.routes.push(route);
   }
 
-  private resource(name: string, options: { only: (module: any) => any }, builder?: Builder) {
+  private resource(name: string, options: { only: Verb | Verb[] }, builder?: Builder) {
     const module = require(`@server/routes/${name}`);
     const { only } = options;
 
@@ -125,7 +126,5 @@ class Router {
 }
 
 export default function routes(builder: (methods: any) => void) {
-  const router = new Router(builder);
-  
-  return router.server;
+  return new Router(builder).server;
 }

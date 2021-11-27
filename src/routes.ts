@@ -1,4 +1,4 @@
-import routes from "@infra/http/router";
+import routes from "@infra/router";
 
 // NOTE: verb choce is based on avoiding conflicts with keywords (cannot use 'new' or 'delete' for example.)
 

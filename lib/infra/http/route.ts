@@ -33,7 +33,6 @@ export default class Route {
   }
 
   public get path() {
-    this.router;
     return this._path;
   }
 
