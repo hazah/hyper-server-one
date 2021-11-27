@@ -1,10 +1,6 @@
-import express, { Router, Request, Response } from "express";
+import { Request, Response } from "express";
 
-import renderer from "renderer";
-
-const router = Router();
-
-function fresh(req: Request, res: Response, next) {
+export function fresh(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
@@ -25,18 +21,6 @@ function fresh(req: Request, res: Response, next) {
   });
 }
 
-function make(req: Request, res: Response) {
+export function make(req: Request, res: Response) {
   res.end(req.url);
 }
-
-router.route('/authenticate')
-  .get(fresh)
-  .post(make);
-
-const index = express()
-  .engine("tsx", renderer)
-  .set("views", "src/app/screens")
-  .set("view engine", "tsx")
-  .use(router);
-
-export default index;

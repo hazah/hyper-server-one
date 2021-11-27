@@ -3,7 +3,7 @@ import i18next from "i18next-http-middleware";
 import methodOverride from "method-override";
 
 import i18n from "i18n";
-import routes from "router";
+import routes from "routes";
 
 const app = express()
   .disable("x-powered-by")
@@ -17,6 +17,6 @@ const app = express()
     }
   }))
   .use(i18next.handle(i18n))
-  .use(...routes);
+  .use(routes);
 
 export default app;
