@@ -1,9 +1,9 @@
 import React from "react";
 
-const Layout = ({ html }) => (
+const Application = ({ html }) => (
   <html>
     <body dangerouslySetInnerHTML={{ __html: html }}/>
   </html>
 );
 
-export default Layout;
+export default Application;

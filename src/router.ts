@@ -1,10 +1,11 @@
 import index from "@server/routes";
-import login from "@server/routes/login";
-import logout from "@server/routes/logout";
+import about from "@server/routes/about";
+import authenticate from "@server/routes/authenticate";
+import eject from "@server/routes/eject";
 import register from "@server/routes/register";
 
 function routes(_x: any) {
-  return [index, login, logout, register];
+  return [index, about, authenticate, eject, register];
 }
 
 export default routes(({ root, resource, authenticated, unauthenticated }) => {
@@ -12,10 +13,10 @@ export default routes(({ root, resource, authenticated, unauthenticated }) => {
   
   unauthenticated(() => {
     resource('register', { only: ['get', 'post'] });
-    resource('login', { only: ['get', 'post'] });
+    resource('authenticate', { only: ['get', 'post'] });
   });
 
   authenticated(() => {
-    resource('logout', { only: 'delete' });
+    resource('eject', { only: 'delete' });
   });
 });

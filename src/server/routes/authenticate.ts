@@ -8,7 +8,7 @@ function get(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
-      res.render('Register', { url, static: process.env.MODE === "server-only" }, (error, html) => {
+      res.render('Authenticate', { url, static: process.env.MODE === "server-only" }, (error, html) => {
         if (error) {
           next(error);
         } else {
@@ -23,7 +23,7 @@ function post(req: Request, res: Response) {
   res.end(req.url);
 }
 
-router.route('/register')
+router.route('/authenticate')
   .get(get)
   .post(post);
 

@@ -6,8 +6,8 @@ function delete_(req: Request, res: Response) {
   res.end(req.url);
 }
 
-router
-  .delete('/logout', delete_);
+router.route('/eject')
+  .delete(delete_);
 
 const index = express()
   .use(router);

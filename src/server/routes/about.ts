@@ -2,30 +2,25 @@ import express, { Router, Request, Response } from "express";
 
 import renderer from "renderer";
 
-const router = Router();
-
 function get(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
-      res.render('Login', { url }, (error, html) => {
+      res.render('About', { url, static: process.env.MODE === "server-only" }, (error, html) => {
         if (error) {
           next(error);
         } else {
-          res.render('Layout', { html, static: true });
+          res.render('Application', { html, static: true });
         }
       });
     }
   });
 }
 
-function post(req: Request, res: Response) {
-  res.end(req.url);
-}
+const router = Router()
 
-router
-  .get('/login', get)
-  .post('/login', post);
+router.route('/about')
+  .get(get);
 
 const index = express()
   .engine("tsx", renderer)

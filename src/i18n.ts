@@ -11,7 +11,7 @@ i18n
         translation: {
           homeTitle: "Home",
           aboutTitle: "About",
-          loginTitle: "Login",
+          authenticateTitle: "Authenticate",
           registerTitle: "Register",
         }
       }
