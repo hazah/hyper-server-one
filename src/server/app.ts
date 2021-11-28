@@ -17,6 +17,6 @@ const app = express()
     }
   }))
   .use(i18next.handle(i18n))
-  .use(routes);
+  .use(routes("server"));
 
 export default app;

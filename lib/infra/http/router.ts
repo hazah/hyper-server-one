@@ -1,7 +1,7 @@
 // these are here temporarily
 import express from "express";
 
-import Route from "@infra/http/route";
+import Route from "./route";
 
 type Builder = (methods: any) => void;
 type Verb = (module: any) => any;
@@ -30,11 +30,6 @@ class Router {
     this.routes.forEach(route => app.use(route.route));
 
     return app;
-  }
-
-  // generate server (currently reactjs) application
-  public get client() {
-    return null;
   }
 
   private root(name: string, verb: Verb) {
@@ -77,23 +72,19 @@ class Router {
   }
 
   private unauthenticated(builder: Builder) {
-    const { root, resource, authenticated, unauthenticated, verbs } = this
+    const { root, resource, verbs } = this
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
-      authenticated: authenticated.bind(this),
-      unauthenticated: unauthenticated.bind(this),
       verbs: verbs,
     });
   }
 
   private authenticated(builder: Builder) {
-    const { root, resource, authenticated, unauthenticated, verbs } = this
+    const { root, resource, verbs } = this
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
-      authenticated: authenticated.bind(this),
-      unauthenticated: unauthenticated.bind(this),
       verbs: verbs,
     });
   }

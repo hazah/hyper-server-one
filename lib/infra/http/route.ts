@@ -1,7 +1,7 @@
 import express, { Express, Router } from "express";
 import { IRoute } from "express-serve-static-core";
 
-import renderer from "renderer";
+import renderer from "./renderer";
 
 export default class Route {
   private _router: Router;
