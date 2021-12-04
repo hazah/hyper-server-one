@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import App from "@app/App";
+import App from "@app/screens/App";
 
 import i18n from "i18n";
 

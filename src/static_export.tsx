@@ -3,7 +3,7 @@ import { renderToString } from "react-dom/server";
 import HtmlController from "@infra/http/formats/html_controller";
 
 import Controller from "@infra/http/controller";
-import App from "@app/App";
+import App from "@app/screens/App";
 import Document from "@app/Document";
 import config, { filterConfigForClient } from "config";
 import theme from "theme";

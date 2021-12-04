@@ -4,7 +4,7 @@ export function display(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
-      res.render('Home', { url, static: process.env.MODE === "server-only", app: true }, (error, html) => {
+      res.render('App', { url, static: process.env.MODE === "server-only", app: true }, (error, html) => {
         if (error) {
           next(error);
         } else {

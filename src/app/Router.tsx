@@ -1,12 +1,12 @@
 import React from "react";
-import { Switch } from "react-router-dom";
+import { Routes } from "react-router-dom";
 
 import routes from "routes";
 
 const Router = () => (
-  <Switch>
+  <Routes>
     {routes("client")}
-  </Switch>
+  </Routes>
 );
 
 export default Router;

@@ -3,11 +3,11 @@ import React from "react";
 const Shell = ({ html, htmlAttributes, bodyAttributes, Title, Meta, Style, Script, Link }) => (
   <html {...htmlAttributes}>
     <head>
-      <Meta/>
+      {/* <Meta/>
       <Title/>
       <Link/>
       <Style/>
-      <Script/>
+      <Script/> */}
     </head>
     <body {...bodyAttributes}>
       <div id="root"  dangerouslySetInnerHTML={{ __html: html }}/>

@@ -20,10 +20,13 @@ class Router {
   }
 
   // generate client (currently reactjs) application
-  public get client() {
+  public get router() {
     this.children.forEach(child => child.parent);
 
-    return this.routes.map((route: Route) => <ReactRoute path={route.path} component={route.component}/>);
+    return this.routes.map((route: Route) => {
+      const Component = route.component;
+      return <ReactRoute path={route.path} element={<Component/>}/>
+    });
   }
 
   private root(name: string, verb: Verb) {
@@ -37,14 +40,13 @@ class Router {
   }
 
   private resource(name: string, options: { only: Verb | Verb[] }, builder?: Builder) {
-    const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-    const component = require(`@app/screens/${componentName}`).default;
     const { only } = options;
-
 
     [].concat(only).forEach(verb => {
       const { path, method } = verb;
       if (method === "get") {
+        const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+        const component = require(`@app/screens/${componentName}`).default;
         const key = `/${name}${path}`;
         const route = new Route(key, {
           mappings: [
@@ -101,7 +103,7 @@ class Router {
   }
 
   private get make() {
-    return { path: '', method: 'post' };
+    return { path: '/new', method: 'post' };
   }
 
   private get erase() {
@@ -110,5 +112,5 @@ class Router {
 }
 
 export default function routes(builder: (methods: any) => void) {
-  return new Router(builder).client;
+  return new Router(builder).router;
 }

@@ -108,7 +108,7 @@ class Router {
   }
 
   private make({ make }) {
-    return { handler: make, path: '', method: 'post' };
+    return { handler: make, path: '/new', method: 'post' };
   }
 
   private erase({ erase }) {

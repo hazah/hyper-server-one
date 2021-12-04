@@ -1,7 +1,7 @@
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import axios from "axios";
 import Controller from "../controller";
-import { StaticRouter } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 import { renderToString } from "react-dom/server";
 import { Helmet, HelmetData } from "react-helmet";
 import {
@@ -72,9 +72,9 @@ export default abstract class HtmlController extends Controller {
       sheets.collect(
         <ThemeProvider theme={this.theme}>
           <CssBaseline />
-          <StaticRouter context={context} location={this.req.url}>
+          {/* <StaticRouter context={context} location={this.req.url}>
             <App />
-          </StaticRouter>
+          </StaticRouter> */}
         </ThemeProvider>
       )
     );
