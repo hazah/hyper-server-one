@@ -11,7 +11,7 @@
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
     "export": "razzle export",
-    "clean": "rm -rf build/ cache/",
+    "clean": "rm -rf build/ cache/ storybook-static/",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
