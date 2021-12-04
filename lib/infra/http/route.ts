@@ -21,7 +21,7 @@ export default class Route {
         route[verb].call(route, mapping[verb]);
       });
 
-      if (path.substring(1) === name) {
+      if (path.substring(1) === this.name) {
         this._path = route;
       }
     });
