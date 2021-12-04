@@ -4,11 +4,11 @@ export function fresh(req: Request, res: Response, next) {
   res.format({
     html: () => {
       const { url } = req;
-      res.render('Register', { url, static: process.env.MODE === "server-only" }, (error, html) => {
+      res.render('Register', { url, static: process.env.MODE === "server-only", app: true }, (error, html) => {
         if (error) {
           next(error);
         } else {
-          res.render('Application', { html, static: true }, (error, html) => {
+          res.render('Shell', { html, static: true }, (error, html) => {
             if (error) {
               next(error);
             } else {

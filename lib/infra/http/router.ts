@@ -21,9 +21,9 @@ class Router {
     });
   }
 
-  // generate server (currently expressjs) application
-  public get server() {
-    this.children.forEach(child => child.parent.path.all(child.server));
+  // generate router (currently expressjs) application
+  public get router() {
+    this.children.forEach(child => child.parent.path.all(child.router));
 
     const app = express();
 
@@ -117,5 +117,5 @@ class Router {
 }
 
 export default function routes(builder: (methods: any) => void) {
-  return new Router(builder).server;
+  return new Router(builder).router;
 }
