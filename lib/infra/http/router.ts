@@ -1,5 +1,6 @@
 // these are here temporarily
-import express from "express";
+import express, { Request, Response } from "express";
+import { Helmet } from "react-helmet";
 
 import Route from "./route";
 
@@ -37,7 +38,7 @@ class Router {
     const { handler, path } = verb(module);
     const route = new Route(name, { mappings: {
       [`/${path}`]: {
-        'get': handler,
+        'get': this.handler(handler),
       },
     }});
     this.routes.push(route);
@@ -56,7 +57,7 @@ class Router {
           map[key] = {};
         }
 
-        map[key][method] = handler;
+        map[key][method] = this.handler(handler);
         
         return map;
       }, {})
@@ -113,6 +114,56 @@ class Router {
 
   private erase({ erase }) {
     return { handler: erase, path: '', method: 'delete' };
+  }
+  
+  private render(req: Request, res: Response, next) {
+    const { url } = req;
+    
+    res.render('App', { url, static: process.env.MODE === "server-only", app: true }, (error, html) => {
+      if (error) {
+        next(error);
+      } else {
+        const helmet = Helmet.renderStatic();
+        
+        const htmlAttributes = helmet.htmlAttributes.toComponent();
+        const bodyAttributes = helmet.bodyAttributes.toComponent();
+        
+        const title = helmet.title.toComponent();
+        const meta = helmet.meta.toComponent();
+        const link = helmet.link.toComponent();
+        const script = helmet.script.toComponent();
+        const style = helmet.style.toComponent();
+  
+        const options = { 
+          html,
+          htmlAttributes,
+          bodyAttributes,
+          title,
+          meta,
+          link,
+          script,
+          style,
+          static: true,
+        };
+  
+        res.render('Shell', options, (error, html) => {
+          if (error) {
+            next(error);
+          } else {
+            res.send(`<!DOCTYPE html>${html}`);
+          }
+        });
+      }
+    });
+  }
+
+  private handler(handler) {
+    return (req: Request, res: Response, next) => {
+      const format = res.format.bind(res);
+      const render = () => this.render(req, res, next);
+
+      handler({ format, render });
+    }
   }
 }
 
