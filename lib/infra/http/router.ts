@@ -159,12 +159,14 @@ class Router {
     });
   }
 
-  private handler(handler: ({ format, render }: { format: any; render: () => void; }) => void) {
+  private handler(handler: ({ format, render, end, url }: { format: any; render: () => void; end: (arg: any) => void; url: string }) => void) {
     return (req: Request, res: Response, next) => {
       const format = res.format.bind(res);
       const render = () => this.render(req, res, next);
+      const end = (arg: any) => res.end(arg);
+      const url = req.url;
 
-      handler({ format, render });
+      handler({ format, render, end, url });
     }
   }
 }

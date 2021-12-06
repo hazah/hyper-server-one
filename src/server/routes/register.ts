@@ -7,6 +7,6 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make(req: Request, res: Response) {
-  res.end(req.url);
+export function make({ end, url }) {
+  end(url);
 }
