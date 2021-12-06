@@ -50,20 +50,28 @@ function formTitle(user: User): string {
 const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: AccessFormProps) => {
   const { register, formState: { errors }, handleSubmit } = useForm<FormFields>();
 
+  const method  = process.env.MODE === "server-only"
+                ? { method: "post" }
+                : {}
+
+  const required  = process.env.MODE === "server-only"
+                  ? { required: true }
+                  : {}
+
   return (
-    <form onSubmit={useSubmitter(onSubmit, handleSubmit)} method="post" action={formAction(user)}>
+    <form onSubmit={useSubmitter(onSubmit, handleSubmit)} action={formAction(user)} {...method}>
       <input type="hidden" name="_method" value={formMethod(user)}/>
       {(!user || !("email" in user)) && (
         <fieldset>
           <legend>{formTitle(user)}</legend>
           <label>
             <strong>email</strong>
-            <input {...register("email", { required: true })} type="email" />
+            <input {...register("email", { required: true })} type="email" {...required}/>
             {errors.email && <span>{errors.email.message}</span>}
           </label>
           <label>
             <strong>password</strong>
-            <input {...register("password", { required: true })} type="password" />
+            <input {...register("password", { required: true })} type="password" {...required}/>
             {errors.password && <span>{errors.password.message}</span>}
           </label>
         </fieldset>
