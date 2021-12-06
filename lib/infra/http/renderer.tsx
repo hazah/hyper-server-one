@@ -25,8 +25,10 @@ const withAssets = (Component: FunctionComponent) => {
       <Helmet>
         {js}
         {css}
+        {process.env.NODE_ENV === 'development' && 
+          <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>}
       </Helmet>
-      <Component/>
+      <Component {...props}/>
     </>
   );
 }

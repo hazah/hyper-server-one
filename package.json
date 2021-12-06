@@ -29,7 +29,11 @@
     }
   },
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
     "@fontsource/roboto": "^4.4.5",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.2",
     "@types/method-override": "^0.0.32",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
