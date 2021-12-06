@@ -43,6 +43,10 @@ function formAction(user: User): string {
   return user && (("email" in user) ? "/eject" : "/authenticate/new") || "/register/new";
 }
 
+function formTitle(user: User): string {
+  return user && (("email" in user) ? null : "Authenticate") || "Register";
+}
+
 const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: AccessFormProps) => {
   const { register, formState: { errors }, handleSubmit } = useForm<FormFields>();
 
@@ -50,22 +54,19 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: Acce
     <form onSubmit={useSubmitter(onSubmit, handleSubmit)} method="post" action={formAction(user)}>
       <input type="hidden" name="_method" value={formMethod(user)}/>
       {(!user || !("email" in user)) && (
-        <aside>
-          <section>
-            <label>
-              <strong>email</strong>
-              <input {...register("email", { required: true })} type="email" />
-              {errors.email && <span>{errors.email.message}</span>}
-            </label>
-          </section>
-          <section>
-            <label>
-              <strong>password</strong>
-              <input {...register("password", { required: true })} type="password" />
-              {errors.password && <span>{errors.password.message}</span>}
-            </label>
-          </section>
-        </aside>
+        <fieldset>
+          <legend>{formTitle(user)}</legend>
+          <label>
+            <strong>email</strong>
+            <input {...register("email", { required: true })} type="email" />
+            {errors.email && <span>{errors.email.message}</span>}
+          </label>
+          <label>
+            <strong>password</strong>
+            <input {...register("password", { required: true })} type="password" />
+            {errors.password && <span>{errors.password.message}</span>}
+          </label>
+        </fieldset>
       )}
       <button type="submit">{formActionName(user)}</button>
     </form>

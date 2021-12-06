@@ -9,10 +9,10 @@ i18n
     resources: {
       en: {
         translation: {
-          homeTitle: "Home",
-          aboutTitle: "About",
-          authenticateTitle: "Authenticate",
-          registerTitle: "Register",
+          "/": "Home",
+          "/about": "About",
+          "/authenticate/new": "Authenticate",
+          "/register/new": "Register",
         }
       }
     },

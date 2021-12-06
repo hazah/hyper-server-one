@@ -1,4 +1,5 @@
-import { Route as ReactRoute } from "react-router-dom";
+import React from "react";
+import { Outlet, Route as ReactRoute } from "react-router-dom";
 import Route from "./route";
 
 type Builder = (methods: any) => void;
@@ -23,18 +24,23 @@ class Router {
   public get router() {
     this.children.forEach(child => child.parent);
 
-    return this.routes.map((route: Route) => {
-      const Component = route.component;
-      return <ReactRoute key={route.path} path={route.path} element={<Component/>}/>
-    });
+    return (
+      <ReactRoute path="/" element={<Outlet/>}>
+        {this.routes.map((route: Route) => {
+          const Component = route.component;
+          return route.path 
+            ? <ReactRoute key={route.path} element={<Component/>} path={route.path}/>
+            : <ReactRoute key={'root'}     element={<Component/>} index/>;
+        })}
+      </ReactRoute>
+    );
   }
 
-  private root(name: string, verb: Verb) {
+  private root(name: string, _verb: Verb) {
     const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
     const component = require(`@app/screens/${componentName}`).default;
-    const { path } = verb;
     const route = new Route(name, { mappings: [
-      `/${path}`, component,
+      false, component,
     ]});
     this.routes.push(route);
   }
@@ -47,7 +53,7 @@ class Router {
       if (method === "get") {
         const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
         const component = require(`@app/screens/${componentName}`).default;
-        const key = `/${name}${path}`;
+        const key = `${name}${path}`;
         const route = new Route(key, {
           mappings: [
             key, component
