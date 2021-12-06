@@ -1,6 +1,7 @@
 // these are here temporarily
 import express, { Request, Response } from "express";
 import { Helmet } from "react-helmet";
+import createEmotionServer from "@emotion/server/create-instance";
 import createCache from '@emotion/cache';
 
 import Route from "./route";
@@ -119,7 +120,9 @@ class Router {
   
   private render(req: Request, res: Response, next) {
     const { url } = req;
-    const cache = createCache({ key: 'css' });
+    const key = 'css';
+    const cache = createCache({ key });
+    const { extractCritical } = createEmotionServer(cache);
     
     res.render('App', { url, static: process.env.MODE === "server-only", app: true, cache }, (error, html) => {
       if (error) {
@@ -135,6 +138,8 @@ class Router {
         const link = helmet.link.toComponent();
         const script = helmet.script.toComponent();
         const style = helmet.style.toComponent();
+
+        const { ids, css } = extractCritical(html);
   
         const options = { 
           html,
@@ -145,6 +150,8 @@ class Router {
           link,
           script,
           style,
+          ids,
+          css,
           static: true,
         };
   
