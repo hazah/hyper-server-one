@@ -124,7 +124,7 @@ class Router {
     return { handler: erase, path: "", method: "delete" };
   }
 
-  private render(req: Request, res: Response, next) {
+  private render(req: Request, res: Response, next, options: any) {
     const { url } = req;
     const key = "css";
     const cache = createCache({ key });
@@ -132,7 +132,7 @@ class Router {
 
     res.render(
       "App",
-      { url, static: process.env.MODE === "server-only", app: true, cache },
+      { url, static: process.env.MODE === "server-only", app: true, cache, ...options },
       (error, html) => {
         if (error) {
           next(error);
@@ -184,14 +184,14 @@ class Router {
       url,
     }: {
       format: any;
-      render: () => void;
+      render: (options: any) => void;
       end: (arg: any) => void;
       url: string;
     }) => void
   ) {
     return (req: Request, res: Response, next) => {
       const format = res.format.bind(res);
-      const render = () => this.render(req, res, next);
+      const render = (options: any) => () => this.render(req, res, next, options);
       const end = (arg: any) => res.end(arg);
       const url = req.url;
 

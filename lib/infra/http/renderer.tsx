@@ -4,8 +4,6 @@ import { StaticRouter } from "react-router-dom/server";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider } from "@emotion/react";
-
-import theme from "../../../src/theme";
 import { Helmet } from "react-helmet";
 
 let js: any;
@@ -86,8 +84,10 @@ export default async function jsxEngine(
     }`).default;
 
     if (isApp) {
+      const theme = options.theme;
       const cache = options.cache;
 
+      delete options.theme;
       delete options.cache;
 
       Component = withRouter()(Component);
