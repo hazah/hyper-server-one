@@ -1,6 +1,9 @@
 import React, { FunctionComponent } from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { CacheProvider } from '@emotion/react';
 
 import theme from "../../../src/theme";
 import { Helmet } from "react-helmet";
@@ -19,7 +22,7 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
-const withAssets = (Component: FunctionComponent) => {
+const withAssets = () => (Component: FunctionComponent) => {
   return ({...props}) => (
     <>
       <Helmet>
@@ -34,13 +37,18 @@ const withAssets = (Component: FunctionComponent) => {
 }
 
 
-const withTheme = (Component: FunctionComponent, theme: any) => {
+const withTheme = (theme: any, cache: any) => (Component: FunctionComponent) => {
   return ({...props}) => (
-      <Component {...props}/>
+    <CacheProvider value={cache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...props}/>
+      </ThemeProvider>
+    </CacheProvider>
   );
 }
 
-const withRouter = (Component: FunctionComponent) => {
+const withRouter = () => (Component: FunctionComponent) => {
   return ({ url, ...props }): JSX.Element => {
     return (
       <StaticRouter location={url}>
@@ -62,9 +70,15 @@ export default async function jsxEngine(path: string, options: any, callback: (e
   try {
     let Component = require(`@app/${path.substring(0, path.length - 4).split("/app/")[1]}`).default;
     
-    Component = isApp ? withAssets(Component) : Component;
-    Component = isApp ? withTheme(Component, theme) : Component;
-    Component = isApp ? withRouter(Component) : Component;
+    if (isApp) {
+      const cache = options.cache;
+      
+      delete options.cache;
+
+      Component = withRouter()(Component);
+      Component = withTheme(theme, cache)(Component);
+      Component = withAssets()(Component);
+    }
     
     callback(null, render(<Component {...options}/>));
   } catch (error) {

@@ -1,6 +1,7 @@
 // these are here temporarily
 import express, { Request, Response } from "express";
 import { Helmet } from "react-helmet";
+import createCache from '@emotion/cache';
 
 import Route from "./route";
 
@@ -118,8 +119,9 @@ class Router {
   
   private render(req: Request, res: Response, next) {
     const { url } = req;
+    const cache = createCache({ key: 'css' });
     
-    res.render('App', { url, static: process.env.MODE === "server-only", app: true }, (error, html) => {
+    res.render('App', { url, static: process.env.MODE === "server-only", app: true, cache }, (error, html) => {
       if (error) {
         next(error);
       } else {
