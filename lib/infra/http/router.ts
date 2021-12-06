@@ -1,5 +1,4 @@
 // these are here temporarily
-import { ServerStyleSheets } from "@material-ui/core";
 import express, { Request, Response } from "express";
 import { Helmet } from "react-helmet";
 
@@ -118,10 +117,9 @@ class Router {
   }
   
   private render(req: Request, res: Response, next) {
-    const sheets = new ServerStyleSheets();
     const { url } = req;
     
-    res.render('App', { url, static: process.env.MODE === "server-only", app: true, sheets }, (error, html) => {
+    res.render('App', { url, static: process.env.MODE === "server-only", app: true }, (error, html) => {
       if (error) {
         next(error);
       } else {
@@ -145,7 +143,6 @@ class Router {
           link,
           script,
           style,
-          sheets: sheets.getStyleElement(),
           static: true,
         };
   

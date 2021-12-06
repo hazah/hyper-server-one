@@ -1,16 +1,15 @@
 import React from "react";
-import { Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Navigation = () => (
   <ul>
     <li>
-      <Link component={RouterLink} to="/" href="/">
+      <Link to="/">
         home
       </Link>
     </li>
     <li>
-      <Link component={RouterLink} to="/about" href="/about">
+      <Link to="/about">
         about
       </Link>
     </li>

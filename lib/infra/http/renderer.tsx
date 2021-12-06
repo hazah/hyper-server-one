@@ -1,11 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
-import {
-  ServerStyleSheets,
-  ThemeProvider,
-  CssBaseline,
-} from "@material-ui/core";
 
 import theme from "../../../src/theme";
 import { Helmet } from "react-helmet";
@@ -37,12 +32,9 @@ const withAssets = (Component: FunctionComponent) => {
 }
 
 
-const withTheme = (Component: FunctionComponent, sheets: ServerStyleSheets, theme: any) => {
-  return ({...props}) => sheets.collect(
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+const withTheme = (Component: FunctionComponent, theme: any) => {
+  return ({...props}) => (
       <Component {...props}/>
-    </ThemeProvider>
   );
 }
 
@@ -59,7 +51,6 @@ const withRouter = (Component: FunctionComponent) => {
 export default async function jsxEngine(path: string, options: any, callback: (e: any, rendered?: string) => void): Promise<void> {
   const isStatic = !!options.static;
   const isApp = !!options.app;
-  const sheets = options.sheets;
   
   const render = isStatic ? renderToStaticMarkup : renderToString;
     
@@ -70,7 +61,7 @@ export default async function jsxEngine(path: string, options: any, callback: (e
     let Component = require(`@app/${path.substring(0, path.length - 4).split("/app/")[1]}`).default;
     
     Component = isApp ? withAssets(Component) : Component;
-    Component = isApp ? withTheme(Component, sheets, theme) : Component;
+    Component = isApp ? withTheme(Component, theme) : Component;
     Component = isApp ? withRouter(Component) : Component;
     
     callback(null, render(<Component {...options}/>));

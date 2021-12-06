@@ -1,6 +1,5 @@
-import { createTheme } from "@material-ui/core/styles";
 
-const theme = createTheme({
+const theme = {
   overrides: {
     MuiCssBaseline: {
       "@global": {
@@ -10,6 +9,6 @@ const theme = createTheme({
       },
     },
   },
-});
+};
 
 export default theme;

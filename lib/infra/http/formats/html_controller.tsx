@@ -4,11 +4,6 @@ import Controller from "../controller";
 import { StaticRouter } from "react-router-dom/server";
 import { renderToString } from "react-dom/server";
 import { Helmet, HelmetData } from "react-helmet";
-import {
-  ServerStyleSheets,
-  ThemeProvider,
-  CssBaseline,
-} from "@material-ui/core";
 import config from "config";
 
 type EngineType = (
@@ -66,17 +61,14 @@ export default abstract class HtmlController extends Controller {
   }> {
     const context: any = {};
     const App = this.app;
-    const sheets = new ServerStyleSheets();
-
+    
     const markup = renderToString(
-      sheets.collect(
-        <ThemeProvider theme={this.theme}>
-          <CssBaseline />
-          {/* <StaticRouter context={context} location={this.req.url}>
+      
+          <StaticRouter location={this.req.url}>
             <App />
-          </StaticRouter> */}
-        </ThemeProvider>
-      )
+          </StaticRouter>
+      
+      
     );
 
     const helmet = Helmet.renderStatic();
@@ -90,7 +82,7 @@ export default abstract class HtmlController extends Controller {
           )
         : { data: "" };
 
-    const css = `${font_css.data}${sheets.toString()}`;
+    const css = `${font_css.data}`;
 
     if (context.url) {
       return { redirect: context.url };

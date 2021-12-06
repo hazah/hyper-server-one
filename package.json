@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@fontsource/roboto": "^4.4.5",
-    "@material-ui/core": "^4.11.4",
     "@types/method-override": "^0.0.32",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",

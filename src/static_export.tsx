@@ -7,12 +7,6 @@ import App from "@app/screens/App";
 import Document from "@app/Document";
 import config, { filterConfigForClient } from "config";
 import theme from "theme";
-// import { HashRouter, StaticRouter } from "react-router-dom";
-// import {
-//   ServerStyleSheets,
-//   ThemeProvider,
-//   CssBaseline,
-// } from "@material-ui/core";
 let assets: any;
 
 const syncLoadAssets = () => {

@@ -25,7 +25,7 @@ class Router {
 
     return this.routes.map((route: Route) => {
       const Component = route.component;
-      return <ReactRoute path={route.path} element={<Component/>}/>
+      return <ReactRoute key={route.path} path={route.path} element={<Component/>}/>
     });
   }
 
