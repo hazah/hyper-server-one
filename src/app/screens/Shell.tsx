@@ -10,9 +10,7 @@ const Shell = ({ html, htmlAttributes, bodyAttributes, title, meta, style, scrip
       {sheets}
       {script}
     </head>
-    <body {...bodyAttributes}>
-      <div id="root" dangerouslySetInnerHTML={{ __html: html }}/>
-    </body>
+    <body {...bodyAttributes} dangerouslySetInnerHTML={{ __html: html }}/>
   </html>
 );
 

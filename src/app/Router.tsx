@@ -1,11 +1,14 @@
 import React from "react";
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import routes from "routes";
+import Layout from "@app/Layout";
 
 const Router = () => (
   <Routes>
-    {routes("client")}
+    <Route element={<Layout/>}>
+      {routes("client")}
+    </Route>
   </Routes>
 );
 
