@@ -2,19 +2,13 @@ import isElectron from "is-electron";
 import React from "react";
 import { hydrate } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider, CssBaseline } from "@material-ui/core";
 
-import App from "@app/App";
-
-import theme from "theme";
+import App from "@app/screens/App";
 
 hydrate(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ThemeProvider>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById("root"),
   () => {
     const fontStyles = document.querySelector("#font-server-side");

@@ -8,10 +8,10 @@ class Auth {
   private timeoutId = undefined;
   private refreshing: Promise<void> | false;
 
-  public async authenticate(params: { username: string, password: string }): Promise<string | null> {
+  public async authenticate(params: { username: string, password: string }): Promise<{ username: string } | null> {
     try {
       const result = await axios.get(this.loginEndPoint, { params });
-      return result.data.id;
+      return result.data;
     } catch (error) {
       console.log(error);
       return null;

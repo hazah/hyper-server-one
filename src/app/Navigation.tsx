@@ -1,20 +1,30 @@
 import React from "react";
-import { Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import AccessForm from "@app/AccessForm";
 
 const Navigation = () => (
-  <ul>
-    <li>
-      <Link component={RouterLink} to="/" href="/">
-        home
-      </Link>
-    </li>
-    <li>
-      <Link component={RouterLink} to="/about" href="/about">
-        about
-      </Link>
-    </li>
-  </ul>
+  <nav>
+    <ul>
+      <li>
+        <Link to="/">home</Link>
+      </li>
+      <li>
+        <Link to="/about">about</Link>
+      </li>
+      <li>
+        <Link to="/authenticate/new">authenticate</Link>
+      </li>
+      <li>
+        <Link to="/register/new">register</Link>
+      </li>
+      <li>
+        <AccessForm
+          user={{ email: "email@example.com" }}
+          onSubmit={() => null}
+        />
+      </li>
+    </ul>
+  </nav>
 );
 
 export default Navigation;

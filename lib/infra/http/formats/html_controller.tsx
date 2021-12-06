@@ -1,13 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import axios from "axios";
 import Controller from "../controller";
-import { StaticRouter } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 import { renderToString } from "react-dom/server";
-import {
-  ServerStyleSheets,
-  ThemeProvider,
-  CssBaseline,
-} from "@material-ui/core";
+import { Helmet, HelmetData } from "react-helmet";
 import config from "config";
 
 type EngineType = (
@@ -42,8 +38,8 @@ export default abstract class HtmlController extends Controller {
         const Template = HtmlController.template[fileName];
 
         if (Template) {
-          const { markup, assets, css, env } = options;
-          const props = { markup, assets, css, env };
+          const { helmet, markup, assets, css, env } = options;
+          const props = { helmet, markup, assets, css, env };
           return callback(
             null,
             `<!doctype html>${renderToString(<Template {...props} />)}`
@@ -58,24 +54,24 @@ export default abstract class HtmlController extends Controller {
   }
 
   protected async markup(): Promise<{
+    helmet?: HelmetData;
     markup?: string;
     css?: string;
     redirect?: string;
   }> {
     const context: any = {};
     const App = this.app;
-    const sheets = new ServerStyleSheets();
-
+    
     const markup = renderToString(
-      sheets.collect(
-        <ThemeProvider theme={this.theme}>
-          <CssBaseline />
-          <StaticRouter context={context} location={this.req.url}>
+      
+          <StaticRouter location={this.req.url}>
             <App />
           </StaticRouter>
-        </ThemeProvider>
-      )
+      
+      
     );
+
+    const helmet = Helmet.renderStatic();
 
     const font_css =
       config.NODE_ENV !== "development"
@@ -86,25 +82,25 @@ export default abstract class HtmlController extends Controller {
           )
         : { data: "" };
 
-    const css = `${font_css.data}${sheets.toString()}`;
+    const css = `${font_css.data}`;
 
     if (context.url) {
       return { redirect: context.url };
     } else {
-      return { markup, css };
+      return { helmet, markup, css };
     }
   }
 
   protected async ok(withMarkup: boolean = true) {
     if (withMarkup) {
-      const { markup, css, redirect } = await this.markup();
+      const { helmet, markup, css, redirect } = await this.markup();
       if (redirect) {
         this.res.redirect(redirect);
       } else {
         const { assets, env } = this;
         this.res.status(200);
         this.res.type("html");
-        this.res.render("Document", { markup, css, assets, env });
+        this.res.render("Document", { helmet, markup, css, assets, env });
       }
     } else {
       this.res.status(200);

@@ -11,7 +11,9 @@
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
     "export": "razzle export",
-    "clean": "rm -rf build/ cache/"
+    "clean": "rm -rf build/ cache/ storybook-static/",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "jest": {
     "moduleDirectories": [
@@ -22,18 +24,28 @@
       "^@core/(.*)": "<rootDir>/lib/core/$1",
       "^@domain/(.*)": "<rootDir>/lib/domain/$1",
       "^@infra/(.*)": "<rootDir>/lib/infra/$1",
-      "^@util/(.*)": "<rootDir>/lib/util/$1"
+      "^@util/(.*)": "<rootDir>/lib/util/$1",
+      "^@app/(.*)": "<rootDir>/src/app/$1"
     }
   },
   "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.6.0",
     "@fontsource/roboto": "^4.4.5",
-    "@material-ui/core": "^4.11.4",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.2",
+    "@types/method-override": "^0.0.32",
     "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
     "express": "^4.17.1",
+    "i18next": "^21.4.0",
+    "i18next-http-middleware": "^3.1.4",
     "is-electron": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",
@@ -41,9 +53,17 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "^5.1.2"
+    "react-hook-form": "^7.20.2",
+    "react-i18next": "^11.13.0",
+    "react-router-dom": "6",
+    "sb": "^6.3.12"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/react": "^6.3.12",
     "@testing-library/dom": "^7.29.4",
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/react": "^10.0.3",
@@ -57,8 +77,10 @@
     "@types/passport-local": "^1.0.34",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "@types/react-helmet": "^6.1.4",
     "@types/react-router-dom": "^5.1.4",
     "@types/webpack-env": "^1.15.2",
+    "babel-loader": "^8.2.3",
     "babel-preset-razzle": "4.0.4",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
