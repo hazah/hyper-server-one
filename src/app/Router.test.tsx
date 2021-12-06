@@ -12,7 +12,7 @@ test("renders home screen", async () => {
     </MemoryRouter>
   );
 
-  const { homeTitle } = i18n.getDataByLanguage('en').translation;
+  const { homeTitle } = i18n.getDataByLanguage("en").translation;
   await waitFor(() => expect(document.title).toEqual(homeTitle));
   expect(getByText(homeTitle)).toBeInTheDocument();
 });
@@ -24,7 +24,7 @@ test("renders about screen", async () => {
     </MemoryRouter>
   );
 
-  const { aboutTitle } = i18n.getDataByLanguage('en').translation;
+  const { aboutTitle } = i18n.getDataByLanguage("en").translation;
   await waitFor(() => expect(document.title).toEqual(aboutTitle));
   expect(getByText(aboutTitle)).toBeInTheDocument();
 });

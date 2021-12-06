@@ -12,13 +12,13 @@ export default class Route {
     const router = Router();
 
     const { mappings } = this.config;
-    
-    Object.keys(mappings).forEach(path => {
+
+    Object.keys(mappings).forEach((path) => {
       const mapping = mappings[path];
       const route = router.route(path);
-      
-      Object.keys(mapping).forEach(verb => {
-        route[verb].call(route, mapping[verb]);
+
+      Object.keys(mapping).forEach((verb) => {
+        route[verb](mapping[verb]);
       });
 
       if (path.substring(1) === this.name) {

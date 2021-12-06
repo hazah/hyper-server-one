@@ -6,9 +6,7 @@ import Layout from "@app/Layout";
 
 const Router = () => (
   <Routes>
-    <Route element={<Layout/>}>
-      {routes("client")}
-    </Route>
+    <Route element={<Layout />}>{routes("client")}</Route>
   </Routes>
 );
 

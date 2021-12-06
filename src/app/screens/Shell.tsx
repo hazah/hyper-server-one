@@ -1,16 +1,30 @@
 import React from "react";
 
-const Shell = ({ htmlAttributes, title, meta, link, style, ids, css, script, bodyAttributes, html }) => (
+const Shell = ({
+  htmlAttributes,
+  title,
+  meta,
+  link,
+  style,
+  ids,
+  css,
+  script,
+  bodyAttributes,
+  html,
+}) => (
   <html {...htmlAttributes}>
     <head>
       {title}
       {meta}
       {link}
       {style}
-      <style data-emotion={`css ${ids.join(' ')}`} dangerouslySetInnerHTML={{ __html: css }}/>
+      <style
+        data-emotion={`css ${ids.join(" ")}`}
+        dangerouslySetInnerHTML={{ __html: css }}
+      />
       {script}
     </head>
-    <body {...bodyAttributes} dangerouslySetInnerHTML={{ __html: html }}/>
+    <body {...bodyAttributes} dangerouslySetInnerHTML={{ __html: html }} />
   </html>
 );
 

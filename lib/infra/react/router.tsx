@@ -3,14 +3,14 @@ import { Outlet, Route as ReactRoute } from "react-router-dom";
 import Route from "./route";
 
 type Builder = (methods: any) => void;
-type Verb = { path: string, method: string };
+type Verb = { path: string; method: string };
 
 class Router {
   private routes: Route[] = [];
   private children: Router[] = [];
-  
+
   public constructor(builder: Builder, private parent?: Route) {
-    const { root, resource, authenticated, unauthenticated, verbs } = this
+    const { root, resource, authenticated, unauthenticated, verbs } = this;
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
@@ -22,15 +22,21 @@ class Router {
 
   // generate client (currently reactjs) application
   public get router() {
-    this.children.forEach(child => child.parent);
+    this.children.forEach((child) => child.parent);
 
     return (
-      <ReactRoute path="/" element={<Outlet/>}>
+      <ReactRoute path="/" element={<Outlet />}>
         {this.routes.map((route: Route) => {
           const Component = route.component;
-          return route.path 
-            ? <ReactRoute key={route.path} element={<Component/>} path={route.path}/>
-            : <ReactRoute key={'root'}     element={<Component/>} index/>;
+          return route.path ? (
+            <ReactRoute
+              key={route.path}
+              element={<Component />}
+              path={route.path}
+            />
+          ) : (
+            <ReactRoute key={"root"} element={<Component />} index />
+          );
         })}
       </ReactRoute>
     );
@@ -39,41 +45,38 @@ class Router {
   private root(name: string, _verb: Verb) {
     const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
     const component = require(`@app/screens/${componentName}`).default;
-    const route = new Route(name, { mappings: [
-      false, component,
-    ]});
+    const route = new Route(name, { mappings: [false, component] });
     this.routes.push(route);
   }
 
-  private resource(name: string, options: { only: Verb | Verb[] }, builder?: Builder) {
+  private resource(
+    name: string,
+    options: { only: Verb | Verb[] },
+    builder?: Builder
+  ) {
     const { only } = options;
 
-    [].concat(only).forEach(verb => {
+    [].concat(only).forEach((verb) => {
       const { path, method } = verb;
       if (method === "get") {
         const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
         const component = require(`@app/screens/${componentName}`).default;
         const key = `${name}${path}`;
         const route = new Route(key, {
-          mappings: [
-            key, component
-          ]
+          mappings: [key, component],
         });
         this.routes.push(route);
       }
     });
 
     if (builder) {
-    //   const router = new Router(builder, route);
-
-    //   this.children.push(router);
+      //   const router = new Router(builder, route);
+      //   this.children.push(router);
     }
-
-    
   }
 
   private unauthenticated(builder: Builder) {
-    const { root, resource, verbs } = this
+    const { root, resource, verbs } = this;
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
@@ -82,7 +85,7 @@ class Router {
   }
 
   private authenticated(builder: Builder) {
-    const { root, resource, verbs } = this
+    const { root, resource, verbs } = this;
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
@@ -101,19 +104,19 @@ class Router {
   }
 
   private get display() {
-    return { path: '', method: 'get' };
+    return { path: "", method: "get" };
   }
 
   private get fresh() {
-    return { path: '/new', method: 'get' };
+    return { path: "/new", method: "get" };
   }
 
   private get make() {
-    return { path: '/new', method: 'post' };
+    return { path: "/new", method: "post" };
   }
 
   private get erase() {
-    return { path: '', method: 'delete' };
+    return { path: "", method: "delete" };
   }
 }
 

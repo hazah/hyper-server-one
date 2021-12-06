@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 
-
 export function fresh({ format, render }) {
   format({
-    html: render
+    html: render,
   });
 }
 

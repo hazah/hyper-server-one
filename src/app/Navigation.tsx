@@ -6,27 +6,22 @@ const Navigation = () => (
   <nav>
     <ul>
       <li>
-        <Link to="/">
-          home
-        </Link>
+        <Link to="/">home</Link>
       </li>
       <li>
-        <Link to="/about">
-          about
-        </Link>
+        <Link to="/about">about</Link>
       </li>
       <li>
-        <Link to="/authenticate/new">
-          authenticate
-        </Link>
+        <Link to="/authenticate/new">authenticate</Link>
       </li>
       <li>
-        <Link to="/register/new">
-          register
-        </Link>
+        <Link to="/register/new">register</Link>
       </li>
       <li>
-        <AccessForm user={{ email: 'email@example.com' }} onSubmit={() => null}/>
+        <AccessForm
+          user={{ email: "email@example.com" }}
+          onSubmit={() => null}
+        />
       </li>
     </ul>
   </nav>

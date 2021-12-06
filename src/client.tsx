@@ -3,15 +3,12 @@ import React from "react";
 import { hydrate } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
-
 import App from "@app/screens/App";
 
-import theme from "theme";
-
 hydrate(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById("root"),
   () => {
     const fontStyles = document.querySelector("#font-server-side");

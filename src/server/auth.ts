@@ -1,4 +1,4 @@
-import passport from 'passport';
+import passport from "passport";
 import password, { serialize, deserialize } from "@server/auth/password";
 // import jwt from "@server/auth/jwt";
 

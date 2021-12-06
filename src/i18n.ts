@@ -13,14 +13,14 @@ i18n
           "/about": "About",
           "/authenticate/new": "Authenticate",
           "/register/new": "Register",
-        }
-      }
+        },
+      },
     },
-    fallbackLng: 'en',
-    debug: process.env.NODE_ENV === 'development',
+    fallbackLng: "en",
+    debug: process.env.NODE_ENV === "development",
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
-    }
+    },
   });
 
 export default i18n;

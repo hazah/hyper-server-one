@@ -8,7 +8,7 @@ import i18n from "i18n";
 let getByText;
 let initialEntries;
 
-const { homeTitle, aboutTitle } = i18n.getDataByLanguage('en').translation;
+const { homeTitle, aboutTitle } = i18n.getDataByLanguage("en").translation;
 
 beforeEach(() => {
   const renderResult = render(
@@ -16,7 +16,7 @@ beforeEach(() => {
       <App />
     </MemoryRouter>
   );
-  
+
   getByText = renderResult.getByText;
   initialEntries = ["/"];
 });
@@ -26,15 +26,15 @@ test("starts on home screen", () => {
 });
 
 test("clicking on about link on home screen loads about page", () => {
-  fireEvent.click(getByText('about'));
+  fireEvent.click(getByText("about"));
 
   expect(getByText(aboutTitle)).toBeInTheDocument();
 });
 
 test("clicking on home link on about screen loads home page", () => {
-  initialEntries = ["/about"]
+  initialEntries = ["/about"];
 
-  fireEvent.click(getByText('home'));
+  fireEvent.click(getByText("home"));
 
   expect(getByText(homeTitle)).toBeInTheDocument();
 });

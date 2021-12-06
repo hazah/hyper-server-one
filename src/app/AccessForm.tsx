@@ -7,19 +7,25 @@ type FormFields = {
   password?: string;
 };
 
-type EmailPasswordHandler = (email?: string, password?: string) => void | Promise<void>;
+type EmailPasswordHandler = (
+  email?: string,
+  password?: string
+) => void | Promise<void>;
 type LogoutHandler = () => void | Promise<void>;
 
 type AccessHandler = EmailPasswordHandler | LogoutHandler;
-type User = {} | { email: string, password: string };
+type User = {} | { email: string; password: string };
 
 export type AccessFormProps = {
   onSubmit: AccessHandler;
   user?: User;
 };
 
-function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<FormFields>): (e?: BaseSyntheticEvent<object, any, any>) => Promise<void> {
-  const onSubmit: SubmitHandler<FormFields> = data => {
+function useSubmitter(
+  submitter: AccessHandler,
+  handler: UseFormHandleSubmit<FormFields>
+): (e?: BaseSyntheticEvent<object, any, any>) => Promise<void> {
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
     const { email, password } = data;
     if (email && password) {
       submitter(email, password);
@@ -32,46 +38,64 @@ function useSubmitter(submitter: AccessHandler, handler: UseFormHandleSubmit<For
 }
 
 function formActionName(user?: User): string {
-  return user && (("email" in user) ? "eject" : "authenticate") || "register";
+  return (user && ("email" in user ? "eject" : "authenticate")) || "register";
 }
 
 function formMethod(user: User): string {
-  return user && (("email" in user) ? "delete" : "post") || "post";
+  return (user && ("email" in user ? "delete" : "post")) || "post";
 }
 
 function formAction(user: User): string {
-  return user && (("email" in user) ? "/eject" : "/authenticate/new") || "/register/new";
+  return (
+    (user && ("email" in user ? "/eject" : "/authenticate/new")) ||
+    "/register/new"
+  );
 }
 
 function formTitle(user: User): string {
-  return user && (("email" in user) ? null : "Authenticate") || "Register";
+  return (user && ("email" in user ? null : "Authenticate")) || "Register";
 }
 
-const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: AccessFormProps) => {
-  const { register, formState: { errors }, handleSubmit } = useForm<FormFields>();
+const AccessForm: FunctionComponent<AccessFormProps> = ({
+  onSubmit,
+  user,
+}: AccessFormProps) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormFields>();
 
-  const method  = process.env.MODE === "server-only"
-                ? { method: "post" }
-                : {}
+  const method = process.env.MODE === "server-only" ? { method: "post" } : {};
 
-  const required  = process.env.MODE === "server-only"
-                  ? { required: true }
-                  : {}
+  const required = process.env.MODE === "server-only" ? { required: true } : {};
 
   return (
-    <form onSubmit={useSubmitter(onSubmit, handleSubmit)} action={formAction(user)} {...method}>
-      <input type="hidden" name="_method" value={formMethod(user)}/>
+    <form
+      onSubmit={useSubmitter(onSubmit, handleSubmit)}
+      action={formAction(user)}
+      {...method}
+    >
+      <input type="hidden" name="_method" value={formMethod(user)} />
       {(!user || !("email" in user)) && (
         <fieldset>
           <legend>{formTitle(user)}</legend>
           <label>
             <strong>email</strong>
-            <input {...register("email", { required: true })} type="email" {...required}/>
+            <input
+              {...register("email", { required: true })}
+              type="email"
+              {...required}
+            />
             {errors.email && <span>{errors.email.message}</span>}
           </label>
           <label>
             <strong>password</strong>
-            <input {...register("password", { required: true })} type="password" {...required}/>
+            <input
+              {...register("password", { required: true })}
+              type="password"
+              {...required}
+            />
             {errors.password && <span>{errors.password.message}</span>}
           </label>
         </fieldset>
@@ -79,7 +103,7 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: Acce
       <button type="submit">{formActionName(user)}</button>
     </form>
   );
-}
+};
 
 AccessForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -87,13 +111,13 @@ AccessForm.propTypes = {
     PropTypes.shape({}),
     PropTypes.shape({
       email: PropTypes.string.isRequired,
-      password: PropTypes.string.isRequired
-    })
-  ])
+      password: PropTypes.string.isRequired,
+    }),
+  ]),
 };
 
 AccessForm.defaultProps = {
-  user: undefined
-}
+  user: undefined,
+};
 
 export default AccessForm;

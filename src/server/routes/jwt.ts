@@ -13,12 +13,12 @@
 //   .get(
 //     (req, res) => {
 //       try {
-//         const { 
-//           session: { 
+//         const {
+//           session: {
 //             passport: { user }
-//           } 
-//         }: { 
-//           session?: { 
+//           }
+//         }: {
+//           session?: {
 //             passport: { user: { username: string } }
 //           } } = req as any;
 
@@ -35,7 +35,6 @@
 //       }
 //     }
 //   );
-
 
 // const server = express()
 //   .use(router);

@@ -5,12 +5,11 @@ declare module "*.svg" {
   export default src;
 }
 
-
 declare global {
   namespace Express {
     export interface Request {
       // usersDb?: PouchDB.Database;
-      session?: { passport: { user: { username: string }}}
+      session?: { passport: { user: { username: string } } };
     }
   }
 
