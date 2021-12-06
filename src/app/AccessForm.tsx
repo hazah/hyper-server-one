@@ -39,11 +39,15 @@ function formMethod(user: User): string {
   return user && (("email" in user) ? "delete" : "post") || "post";
 }
 
+function formAction(user: User): string {
+  return user && (("email" in user) ? "/eject" : "/authenticate/new") || "/register/new";
+}
+
 const AccessForm: FunctionComponent<AccessFormProps> = ({ onSubmit, user }: AccessFormProps) => {
   const { register, formState: { errors }, handleSubmit } = useForm<FormFields>();
 
   return (
-    <form onSubmit={useSubmitter(onSubmit, handleSubmit)} method="post">
+    <form onSubmit={useSubmitter(onSubmit, handleSubmit)} method="post" action={formAction(user)}>
       <input type="hidden" name="_method" value={formMethod(user)}/>
       {(!user || !("email" in user)) && (
         <aside>

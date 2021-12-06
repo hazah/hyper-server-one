@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AccessForm from "./AccessForm";
 
 const Navigation = () => (
   <ul>
@@ -12,6 +13,19 @@ const Navigation = () => (
       <Link to="/about">
         about
       </Link>
+    </li>
+    <li>
+      <Link to="/authenticate/new">
+        authenticate
+      </Link>
+    </li>
+    <li>
+      <Link to="/register/new">
+        register
+      </Link>
+    </li>
+    <li>
+      <AccessForm user={{ email: 'email@example.com' }} onSubmit={() => null}/>
     </li>
   </ul>
 );
