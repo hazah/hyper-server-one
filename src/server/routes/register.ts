@@ -6,6 +6,6 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ redirect, url }) {
+export function make({ redirect }) {
   redirect("/about");
 }
