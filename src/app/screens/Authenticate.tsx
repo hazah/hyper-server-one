@@ -1,7 +1,7 @@
 import React from "react";
 
-import AccessForm from "@app/AccessForm";
+import Access from "@app/Access";
 
-const Authenticate = () => <AccessForm onSubmit={() => null} user={{}} />;
+const Authenticate = () => <Access onSubmit={() => null} user={{}} />;
 
 export default Authenticate;

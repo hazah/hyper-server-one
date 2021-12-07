@@ -33,6 +33,7 @@
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
     "@fontsource/roboto": "^4.4.5",
+    "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo": "^7.1.0",
     "@mui/icons-material": "^5.2.0",
     "@mui/material": "^5.2.2",

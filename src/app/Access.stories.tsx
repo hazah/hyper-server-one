@@ -2,18 +2,18 @@ import React from "react";
 
 import { Story, Meta } from "@storybook/react";
 
-import AccessForm, { AccessFormProps } from "./AccessForm";
+import Access, { AccessProps } from "./Access";
 
 import theme from "../theme";
 import { Helmet } from "react-helmet";
 
 export default {
-  component: AccessForm,
-  title: "Components/AccessForm",
+  component: Access,
+  title: "Components/Access",
   argTypes: { onSubmit: { action: "submit" } },
 } as Meta;
 
-const FormTemplate: Story<AccessFormProps> = (args) => (
+const FormTemplate: Story<AccessProps> = (args) => (
   <>
     <Helmet>
       <link
@@ -21,7 +21,7 @@ const FormTemplate: Story<AccessFormProps> = (args) => (
         rel="stylesheet"
       />
     </Helmet>
-    <AccessForm {...args} />
+    <Access {...args} />
   </>
 );
 

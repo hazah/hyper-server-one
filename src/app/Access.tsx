@@ -16,7 +16,7 @@ type LogoutHandler = () => void | Promise<void>;
 type AccessHandler = EmailPasswordHandler | LogoutHandler;
 type User = {} | { email: string; password: string };
 
-export type AccessFormProps = {
+export type AccessProps = {
   onSubmit: AccessHandler;
   user?: User;
 };
@@ -56,10 +56,10 @@ function formTitle(user: User): string {
   return (user && ("email" in user ? null : "Authenticate")) || "Register";
 }
 
-const AccessForm: FunctionComponent<AccessFormProps> = ({
+const Access: FunctionComponent<AccessProps> = ({
   onSubmit,
   user,
-}: AccessFormProps) => {
+}: AccessProps) => {
   const {
     register,
     formState: { errors },
@@ -77,7 +77,7 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({
       {...method}
     >
       <input type="hidden" name="_method" value={formMethod(user)} />
-      {(!user || !("email" in user)) && (
+      {(!user || !("email" in user)) ? (
         <fieldset>
           <legend>{formTitle(user)}</legend>
           <label>
@@ -98,14 +98,14 @@ const AccessForm: FunctionComponent<AccessFormProps> = ({
             />
             {errors.password && <span>{errors.password.message}</span>}
           </label>
+          <button type="submit">{formActionName(user)}</button>
         </fieldset>
-      )}
-      <button type="submit">{formActionName(user)}</button>
+      ) : <a href={formAction(user)} data-turbo-method={formMethod(user)}>{formActionName(user)}</a>}
     </form>
   );
 };
 
-AccessForm.propTypes = {
+Access.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   user: PropTypes.oneOfType([
     PropTypes.shape({}),
@@ -116,8 +116,8 @@ AccessForm.propTypes = {
   ]),
 };
 
-AccessForm.defaultProps = {
+Access.defaultProps = {
   user: undefined,
 };
 
-export default AccessForm;
+export default Access;
