@@ -55,8 +55,8 @@ const withTheme = (theme: any, cache: any) => (
   );
 };
 
-const withRouter = () => (Component: FunctionComponent) => {
-  return ({ url, ...props }): JSX.Element => {
+const withRouter = (url: string) => (Component: FunctionComponent) => {
+  return ({ ...props }): JSX.Element => {
     return (
       <StaticRouter location={url}>
         <Component {...props} />
@@ -67,7 +67,7 @@ const withRouter = () => (Component: FunctionComponent) => {
 
 export default async function jsxEngine(
   path: string,
-  { isStatic, isApp, isLayout, theme, cache, ...options }: any,
+  { url, isStatic, isApp, isLayout, theme, cache, ...options }: any,
   callback: (e: any, rendered?: string) => void
 ): Promise<void> {
   try {
@@ -76,7 +76,7 @@ export default async function jsxEngine(
     }`).default;
 
     if (isApp) {
-      Component = withRouter()(Component);
+      Component = withRouter(url)(Component);
       Component = withTheme(theme, cache)(Component);
       Component = withAssets()(Component);
     } else if (!isLayout) {
