@@ -181,11 +181,13 @@ class Router {
       format,
       render,
       end,
+      redirect,
       url,
     }: {
       format: any;
       render: (options: any) => void;
       end: (arg: any) => void;
+      redirect: (path: string) => void;
       url: string;
     }) => void
   ) {
@@ -193,9 +195,10 @@ class Router {
       const format = res.format.bind(res);
       const render = (options: any) => () => this.render(req, res, next, options);
       const end = (arg: any) => res.end(arg);
+      const redirect = (path: string) => res.redirect(path);
       const url = req.url;
 
-      handler({ format, render, end, url });
+      handler({ format, render, end, url, redirect });
     };
   }
 }

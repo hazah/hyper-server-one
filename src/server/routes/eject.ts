@@ -1,3 +1,3 @@
-export function erase({ end, url }) {
-  end(url);
+export function erase({ redirect }) {
+  redirect("/");
 }

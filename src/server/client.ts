@@ -1,2 +1,1 @@
-console.log("HELLO");
-export {};
+import "@hotwired/turbo";

@@ -6,6 +6,6 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ end, url }) {
-  end(url);
+export function make({ redirect, url }) {
+  redirect("/");
 }
