@@ -125,6 +125,6 @@ class Router {
   }
 }
 
-export default function routes(builder: (methods: any) => void) {
+export default function routes(builder: Builder) {
   return new Router(builder).router;
 }
