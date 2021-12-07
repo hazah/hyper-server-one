@@ -18,11 +18,12 @@ export default class Controller {
   public constructor(private handler: Handler) {}
 
   private render(
-    _req: Request,
+    req: Request,
     res: Response,
     next,
     { template, layout, ...options }: any
   ) {
+    const { url } = req;
     const key = "css";
     const cache = createCache({ key });
     const { extractCritical } = createEmotionServer(cache);
@@ -30,6 +31,7 @@ export default class Controller {
     options = {
       isStatic: process.env.MODE === "server-only",
       isApp: template ? false : true,
+      url,
       cache,
       ...options,
     };
@@ -37,7 +39,7 @@ export default class Controller {
     res.render(template ?? "App", options, (error, html) => {
       if (error) {
         next(error);
-      } else {console.log('here');
+      } else {
         if (template && !layout) {
           res.send(html);
         } else {
@@ -53,7 +55,7 @@ export default class Controller {
           const style = helmet.style.toComponent();
 
           const { ids, css } = extractCritical(html);
-
+          
           const options = {
             html,
             htmlAttributes,
@@ -83,11 +85,11 @@ export default class Controller {
 
   public get middleware() {
     return (req: Request, res: Response, next) => {
-      const format = res.format.bind(res);
+      const format = (formats: any) => res.format(formats);
       const render = (options: any) => () =>
         this.render(req, res, next, options);
       const end = (arg: any) => res.end(arg);
-      const redirect = (path: string) => res.redirect(path);
+      const redirect = (path: string) => () => res.redirect(path);
       const params = req.params;
 
       this.handler({ format, render, end, redirect, params, req });
