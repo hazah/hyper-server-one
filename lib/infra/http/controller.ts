@@ -5,10 +5,11 @@ import createCache from "@emotion/cache";
 
 type HandlerMethods = {
   format: any;
+  params: any;
+  req: Request;
   render: (options: any) => void;
   end: (arg: any) => void;
   redirect: (path: string) => void;
-  url: string;
 };
 
 type Handler = (methods: HandlerMethods) => void;
@@ -16,58 +17,66 @@ type Handler = (methods: HandlerMethods) => void;
 export default class Controller {
   public constructor(private handler: Handler) {}
 
-  private render(req: Request, res: Response, next, options: any) {
-    const { url } = req;
+  private render(
+    _req: Request,
+    res: Response,
+    next,
+    { template, layout, ...options }: any
+  ) {
     const key = "css";
     const cache = createCache({ key });
     const { extractCritical } = createEmotionServer(cache);
 
     options = {
-      url,
-      static: process.env.MODE === "server-only",
-      app: true,
+      isStatic: process.env.MODE === "server-only",
+      isApp: template ? false : true,
       cache,
       ...options,
     };
 
-    res.render("App", options, (error, html) => {
+    res.render(template ?? "App", options, (error, html) => {
       if (error) {
         next(error);
-      } else {
-        const helmet = Helmet.renderStatic();
+      } else {console.log('here');
+        if (template && !layout) {
+          res.send(html);
+        } else {
+          const helmet = Helmet.renderStatic();
 
-        const htmlAttributes = helmet.htmlAttributes.toComponent();
-        const bodyAttributes = helmet.bodyAttributes.toComponent();
+          const htmlAttributes = helmet.htmlAttributes.toComponent();
+          const bodyAttributes = helmet.bodyAttributes.toComponent();
 
-        const title = helmet.title.toComponent();
-        const meta = helmet.meta.toComponent();
-        const link = helmet.link.toComponent();
-        const script = helmet.script.toComponent();
-        const style = helmet.style.toComponent();
+          const title = helmet.title.toComponent();
+          const meta = helmet.meta.toComponent();
+          const link = helmet.link.toComponent();
+          const script = helmet.script.toComponent();
+          const style = helmet.style.toComponent();
 
-        const { ids, css } = extractCritical(html);
+          const { ids, css } = extractCritical(html);
 
-        const options = {
-          html,
-          htmlAttributes,
-          bodyAttributes,
-          title,
-          meta,
-          link,
-          script,
-          style,
-          ids,
-          css,
-          static: true, // always staic, never hydrated
-        };
+          const options = {
+            html,
+            htmlAttributes,
+            bodyAttributes,
+            title,
+            meta,
+            link,
+            script,
+            style,
+            ids,
+            css,
+            isStatic: true, // always staic, never hydrated
+            isLayout: true, // prevents theming the application shell
+          };
 
-        res.render("Shell", options, (error, html) => {
-          if (error) {
-            next(error);
-          } else {
-            res.send(`<!DOCTYPE html>${html}`);
-          }
-        });
+          res.render("Shell", options, (error, html) => {
+            if (error) {
+              next(error);
+            } else {
+              res.send(`<!DOCTYPE html>${html}`);
+            }
+          });
+        }
       }
     });
   }
@@ -79,9 +88,9 @@ export default class Controller {
         this.render(req, res, next, options);
       const end = (arg: any) => res.end(arg);
       const redirect = (path: string) => res.redirect(path);
-      const url = req.url;
+      const params = req.params;
 
-      this.handler({ format, render, end, url, redirect });
+      this.handler({ format, render, end, redirect, params, req });
     };
   }
 }

@@ -67,33 +67,23 @@ const withRouter = () => (Component: FunctionComponent) => {
 
 export default async function jsxEngine(
   path: string,
-  options: any,
+  { isStatic, isApp, isLayout, theme, cache, ...options }: any,
   callback: (e: any, rendered?: string) => void
 ): Promise<void> {
-  const isStatic = !!options.static;
-  const isApp = !!options.app;
-
-  const render = isStatic ? renderToStaticMarkup : renderToString;
-
-  delete options.static;
-  delete options.app;
-
   try {
     let Component = require(`@app/${
       path.substring(0, path.length - 4).split("/app/")[1]
     }`).default;
 
     if (isApp) {
-      const theme = options.theme;
-      const cache = options.cache;
-
-      delete options.theme;
-      delete options.cache;
-
       Component = withRouter()(Component);
       Component = withTheme(theme, cache)(Component);
       Component = withAssets()(Component);
+    } else if (!isLayout) {
+      Component = withTheme(theme, cache)(Component);
     }
+
+    const render = isStatic ? renderToStaticMarkup : renderToString;
 
     callback(null, render(<Component {...options} />));
   } catch (error) {
