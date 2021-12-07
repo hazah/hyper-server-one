@@ -23,6 +23,7 @@ const Layout = () => {
       <h1>{t(location.pathname)}</h1>
       <Navigation />
       <Outlet />
+      <div id="message"></div>
     </Wrapper>
   );
 };

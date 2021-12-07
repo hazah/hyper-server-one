@@ -1,3 +1,4 @@
+import { format } from "path";
 import theme from "theme";
 
 export function fresh({ format, render }) {
@@ -6,6 +7,9 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ redirect }) {
-  redirect("/about");
+export function make({ format, redirect, render, req }) {
+  format({
+    "text/vnd.turbo-stream.html": render({ template: "Registered", theme }),
+    "text/html": redirect("/"),
+  });
 }
