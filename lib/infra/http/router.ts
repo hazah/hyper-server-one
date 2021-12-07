@@ -26,7 +26,7 @@ class Router {
   public get router() {
     this.children.forEach((child) => child.parent.path.all(child.router));
 
-    const app = express();
+    const app = express().disable("x-powered-by");
 
     this.routes.forEach((route) => app.use(route.route));
 
