@@ -6,6 +6,9 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ redirect }) {
-  redirect("/");
+export function make({ format, redirect, render }) {
+  format({
+    "text/vnd.turbo-stream.html": render({ template: "Authenticated", theme }),
+    "text/html": redirect("/"),
+  });
 }

@@ -1,11 +1,11 @@
 import React from "react";
 
-const Registered = () => (
+const Ejected = () => (
   <turbo-stream action="replace" target="message">
     <template>
-      <div id="message" data-turbo-permanent>Registered!</div>
+      <div id="message" data-turbo-permanent>Ejected!</div>
     </template>
   </turbo-stream>
 );
 
-export default Registered;
+export default Ejected;

@@ -7,7 +7,7 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ format, redirect, render, req }) {
+export function make({ format, redirect, render }) {
   format({
     "text/vnd.turbo-stream.html": render({ template: "Registered", theme }),
     "text/html": redirect("/"),
