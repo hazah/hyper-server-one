@@ -20,7 +20,7 @@ export default class Controller {
   private render(
     req: Request,
     res: Response,
-    next,
+    next: (error?: Error) => void,
     { template, layout, ...options }: any
   ) {
     const { url } = req;
@@ -55,7 +55,7 @@ export default class Controller {
           const style = helmet.style.toComponent();
 
           const { ids, css } = extractCritical(html);
-          
+
           const options = {
             html,
             htmlAttributes,
@@ -84,12 +84,13 @@ export default class Controller {
   }
 
   public get middleware() {
-    return (req: Request, res: Response, next) => {
+    return (req: Request, res: Response, next: (error?: Error) => void) => {
       const format = (formats: any) => res.format(formats);
-      const render = (options: any) => () =>
-        this.render(req, res, next, options);
       const end = (arg: any) => res.end(arg);
-      const redirect = (path: string) => () => res.redirect(path);
+
+      const render = (options: any) => this.render(req, res, next, options);
+      const redirect = (path: string) => res.redirect(path);
+
       const params = req.params;
 
       this.handler({ format, render, end, redirect, params, req });

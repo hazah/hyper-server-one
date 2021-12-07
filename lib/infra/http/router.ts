@@ -34,7 +34,7 @@ class Router {
   }
 
   private root(name: string, verb: Verb) {
-    const module = require(`@server/routes/${name}`);
+    const module = require(`@server/controllers/${name}`);
     const { handler, path } = verb(module);
     const controller = new Controller(handler);
     const route = new Route(name, {
@@ -52,7 +52,7 @@ class Router {
     options: { only: Verb | Verb[] },
     builder?: Builder
   ) {
-    const module = require(`@server/routes/${name}`);
+    const module = require(`@server/controllers/${name}`);
     const { only } = options;
 
     const route = new Route(name, {
