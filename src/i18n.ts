@@ -11,6 +11,7 @@ i18n
         translation: {
           "/": "Home",
           "/about": "About",
+          "/profile": "Profile",
           "/authenticate/new": "Authenticate",
           "/register/new": "Register",
         },

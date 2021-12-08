@@ -23,6 +23,9 @@ const Navigation = () => (
         <Link to="/register/new">register</Link>
       </li>
       <li>
+        <Link to="/profile">profile</Link>
+      </li>
+      <li>
         <Access
           user={{ email: "email@example.com" }}
           onSubmit={() => null}

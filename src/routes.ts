@@ -17,7 +17,8 @@ export default routes(
       resource("authenticate", { only: [fresh, make] });
     });
 
-    authenticated(({ resource, verbs: { erase } }) => {
+    authenticated(({ resource, verbs: { erase, display } }) => {
+      resource("profile", { only: display });
       resource("eject", { only: erase });
     });
   }

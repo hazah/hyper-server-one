@@ -2,6 +2,8 @@ import React, { BaseSyntheticEvent, FunctionComponent } from "react";
 import PropTypes from "prop-types";
 import { useForm, SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 
+import config from "config";
+
 type FormFields = {
   email?: string;
   password?: string;
@@ -104,7 +106,7 @@ const Access: FunctionComponent<AccessProps> = ({
         </form>
       ) : (
         <>
-          <a href={formAction(user)} data-turbo-method={formMethod(user)} style={{ display: "none" }}>{formActionName(user)}</a>
+          <a href={formAction(user)} data-turbo-method={formMethod(user)} style={{ display: config.MODE === "server-only" ? "none" : undefined }}>{formActionName(user)}</a>
           <noscript>
             <form onSubmit={useSubmitter(onSubmit, handleSubmit)}
               action={formAction(user)}
