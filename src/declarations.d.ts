@@ -6,6 +6,12 @@ declare module "*.svg" {
 }
 
 declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "turbo-stream": any;
+    }
+  }
+  
   namespace Express {
     export interface Request {
       // usersDb?: PouchDB.Database;

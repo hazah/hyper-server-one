@@ -1,2 +1,4 @@
-console.log("HELLO");
-export {};
+import "@hotwired/turbo";
+import { Application } from "@hotwired/stimulus";
+
+Application.start();

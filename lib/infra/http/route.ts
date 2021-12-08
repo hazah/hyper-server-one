@@ -39,6 +39,7 @@ export default class Route {
   public get route() {
     if (!this._route) {
       this._route = express()
+        .disable("x-powered-by")
         .engine("tsx", renderer)
         .set("views", "src/app/screens")
         .set("view engine", "tsx")

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import AccessForm from "@app/AccessForm";
+import Access from "@app/Access";
 
 const Navigation = () => (
   <nav>
@@ -18,7 +18,7 @@ const Navigation = () => (
         <Link to="/register/new">register</Link>
       </li>
       <li>
-        <AccessForm
+        <Access
           user={{ email: "email@example.com" }}
           onSubmit={() => null}
         />

@@ -1,45 +1,99 @@
 import { Request, Response } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
+import { Helmet } from "react-helmet";
+import createEmotionServer from "@emotion/server/create-instance";
+import createCache from "@emotion/cache";
 
-type HandlerType = (req: Request, res: Response) => void | Promise<void>;
+type HandlerMethods = {
+  format: any;
+  params: any;
+  req: Request;
+  render: (options: any) => void;
+  end: (arg: any) => void;
+  redirect: (path: string) => void;
+};
 
-export default abstract class Controller {
-  public static create(Constructor: any): HandlerType {
-    return (req: Request, res: Response) => {
-      const controller = new Constructor(req, res);
+type Handler = (methods: HandlerMethods) => void;
 
-      controller.performAction();
+export default class Controller {
+  public constructor(private handler: Handler) {}
+
+  private render(
+    req: Request,
+    res: Response,
+    next: (error?: Error) => void,
+    { template, layout, ...options }: any
+  ) {
+    const { url } = req;
+    const key = "css";
+    const cache = createCache({ key });
+    const { extractCritical } = createEmotionServer(cache);
+
+    options = {
+      isStatic: process.env.MODE === "server-only",
+      isApp: template ? false : true,
+      url,
+      cache,
+      ...options,
+    };
+
+    res.render(template ?? "App", options, (error, html) => {
+      if (error) {
+        next(error);
+      } else {
+        if (template && !layout) {
+          res.send(html);
+        } else {
+          const helmet = Helmet.renderStatic();
+
+          const htmlAttributes = helmet.htmlAttributes.toComponent();
+          const bodyAttributes = helmet.bodyAttributes.toComponent();
+
+          const title = helmet.title.toComponent();
+          const meta = helmet.meta.toComponent();
+          const link = helmet.link.toComponent();
+          const script = helmet.script.toComponent();
+          const style = helmet.style.toComponent();
+
+          const { ids, css } = extractCritical(html);
+
+          const options = {
+            html,
+            htmlAttributes,
+            bodyAttributes,
+            title,
+            meta,
+            link,
+            script,
+            style,
+            ids,
+            css,
+            isStatic: true, // always staic, never hydrated
+            isLayout: true, // prevents theming the application shell
+          };
+
+          res.render("Shell", options, (error, html) => {
+            if (error) {
+              next(error);
+            } else {
+              res.send(`<!DOCTYPE html>${html}`);
+            }
+          });
+        }
+      }
+    });
+  }
+
+  public get middleware() {
+    return (req: Request, res: Response, next: (error?: Error) => void) => {
+      const format = (formats: any) => res.format(formats);
+      const end = (arg: any) => res.end(arg);
+
+      const render = (options: any) => this.render(req, res, next, options);
+      const redirect = (path: string) => res.redirect(path);
+
+      const params = req.params;
+
+      this.handler({ format, render, end, redirect, params, req });
     };
   }
-
-  protected get params(): ParamsDictionary {
-    return this.req.params;
-  }
-
-  protected constructor(protected req: Request, protected res: Response) {}
-
-  protected abstract performAction(): void | Promise<void>;
-
-  protected abstract ok(withMarkup: boolean): void | Promise<void>;
-  protected abstract ok<T>(dto?: T): void | Promise<void>;
-
-  protected abstract created(): void | Promise<void>;
-
-  protected abstract clientError(message?: string): void | Promise<void>;
-
-  protected abstract unauthorized(message?: string): void | Promise<void>;
-
-  protected abstract paymentRequired(message?: string): void | Promise<void>;
-
-  protected abstract forbidden(message?: string): void | Promise<void>;
-
-  protected abstract notFound(message?: string): void | Promise<void>;
-
-  protected abstract conflict(message?: string): void | Promise<void>;
-
-  protected abstract tooMany(message?: string): void | Promise<void>;
-
-  protected abstract todo(): void | Promise<void>;
-
-  protected abstract fail(error: Error | string): void | Promise<void>;
 }
