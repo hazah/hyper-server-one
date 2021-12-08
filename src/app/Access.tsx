@@ -71,37 +71,52 @@ const Access: FunctionComponent<AccessProps> = ({
   const required = process.env.MODE === "server-only" ? { required: true } : {};
 
   return (
-    <form
-      onSubmit={useSubmitter(onSubmit, handleSubmit)}
-      action={formAction(user)}
-      {...method}
-    >
-      <input type="hidden" name="_method" value={formMethod(user)} />
+    <>
       {(!user || !("email" in user)) ? (
-        <fieldset>
-          <legend>{formTitle(user)}</legend>
-          <label>
-            <strong>email</strong>
-            <input
-              {...register("email", { required: true })}
-              type="email"
-              {...required}
-            />
-            {errors.email && <span>{errors.email.message}</span>}
-          </label>
-          <label>
-            <strong>password</strong>
-            <input
-              {...register("password", { required: true })}
-              type="password"
-              {...required}
-            />
-            {errors.password && <span>{errors.password.message}</span>}
-          </label>
-          <button type="submit">{formActionName(user)}</button>
-        </fieldset>
-      ) : <a href={formAction(user)} data-turbo-method={formMethod(user)}>{formActionName(user)}</a>}
-    </form>
+        <form
+          onSubmit={useSubmitter(onSubmit, handleSubmit)}
+          action={formAction(user)}
+          {...method}
+        >
+          <input type="hidden" name="_method" value={formMethod(user)} />
+          <fieldset>
+            <legend>{formTitle(user)}</legend>
+            <label>
+              <strong>email</strong>
+              <input
+                {...register("email", { required: true })}
+                type="email"
+                {...required}
+              />
+              {errors.email && <span>{errors.email.message}</span>}
+            </label>
+            <label>
+              <strong>password</strong>
+              <input
+                {...register("password", { required: true })}
+                type="password"
+                {...required}
+              />
+              {errors.password && <span>{errors.password.message}</span>}
+            </label>
+            <button type="submit">{formActionName(user)}</button>
+          </fieldset>
+        </form>
+      ) : (
+        <>
+          <a href={formAction(user)} data-turbo-method={formMethod(user)} style={{ display: "none" }}>{formActionName(user)}</a>
+          <noscript>
+            <form onSubmit={useSubmitter(onSubmit, handleSubmit)}
+              action={formAction(user)}
+              {...method}
+            >
+              <input type="hidden" name="_method" value={formMethod(user)} />
+              <button type="submit">{formActionName(user)}</button>
+            </form>
+          </noscript>
+        </>
+      )}
+    </>
   );
 };
 

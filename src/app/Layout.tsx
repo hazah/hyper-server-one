@@ -6,7 +6,7 @@ import { styled } from "@mui/system";
 
 import Navigation from "@app/Navigation";
 
-const Wrapper = styled("main")({
+const Wrapper = styled("div")({
   height: "100%",
 });
 
@@ -15,16 +15,17 @@ const Layout = () => {
   const location = useLocation();
 
   return (
-    <Wrapper>
+    <>
       <Helmet>
         <title>{t(location.pathname)}</title>
       </Helmet>
-
-      <h1>{t(location.pathname)}</h1>
-      <Navigation />
-      <Outlet />
-      <div id="message" data-turbo-permanent></div>
-    </Wrapper>
+      <Wrapper>
+        <Navigation />
+        <h1>{t(location.pathname)}</h1>
+        <Outlet />
+        <div id="message" data-turbo-permanent></div>
+      </Wrapper>
+    </>
   );
 };
 

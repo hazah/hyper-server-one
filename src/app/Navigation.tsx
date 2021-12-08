@@ -1,10 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Access from "@app/Access";
+import { styled } from "@mui/system";
+
+const UL = styled("ul")({
+  margin: "0px"
+});
 
 const Navigation = () => (
   <nav>
-    <ul>
+    <UL>
       <li>
         <Link to="/">home</Link>
       </li>
@@ -23,7 +28,7 @@ const Navigation = () => (
           onSubmit={() => null}
         />
       </li>
-    </ul>
+    </UL>
   </nav>
 );
 
