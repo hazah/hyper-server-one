@@ -1,26 +1,42 @@
-import { IVerifyOptions, Strategy } from 'passport-local';
+import { IVerifyOptions, Strategy } from "passport-local";
+import PouchDB from "pouchdb";
+import DatabaseAuthentication from "pouchdb-auth";
 
-const password = new Strategy(async (username: string, _password: string, done: (error: any, user?: any, options?: IVerifyOptions) => void) => {
-  // const _users = new Database('_users');
-  // await _users.useAsAuthenticationDB();
+PouchDB.plugin(DatabaseAuthentication);
 
-  // const response = await _users.logIn(username, password);
+const password = new Strategy(
+  async (
+    username: string,
+    password: string,
+    done: (error: any, user?: any, options?: IVerifyOptions) => void
+  ) => {
+    const users = new PouchDB("http://localhost:5984/_users");
+    await users.useAsAuthenticationDB();
 
-  // if (response.ok) {
-  //   const usernameHex = Array.from(username).map((c) => c.charCodeAt(0).toString(16)).join('');
-  //   const userDBName = `userdb-${usernameHex}`;
+    const response = await users.logIn(username, password);
 
-  //   done(null, { userDBName, ...response });
-  // } else {
-  //   done(response);
-  // }
-  done(null, { username });
-});
+    console.log(response);
+
+    // if (response.ok) {
+    //   const usernameHex = Array.from(username).map((c) => c.charCodeAt(0).toString(16)).join('');
+    //   const userDBName = `userdb-${usernameHex}`;
+
+    //   done(null, { userDBName, ...response });
+    // } else {
+    //   done(response);
+    // }
+    done(null, false);
+  }
+);
 
 export default password;
 
-export const deserialize = (user: Express.User, done: (err: any, id?: unknown) => void) => 
-  done(null, JSON.stringify(user));
-    
-export const serialize = (id: unknown, done: (err: any, user?: false | Express.User) => void) => 
-  done(null, JSON.parse(id as string));
+export const deserialize = (
+  user: Express.User,
+  done: (err: any, id?: unknown) => void
+) => done(null, JSON.stringify(user));
+
+export const serialize = (
+  id: unknown,
+  done: (err: any, user?: false | Express.User) => void
+) => done(null, JSON.parse(id as string));
