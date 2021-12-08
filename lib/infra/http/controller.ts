@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Helmet } from "react-helmet";
 import createEmotionServer from "@emotion/server/create-instance";
 import createCache from "@emotion/cache";
+import { Http } from "../HttpProvider";
 
 type HandlerMethods = {
   format: any;
@@ -27,12 +28,14 @@ export default class Controller {
     const key = "css";
     const cache = createCache({ key });
     const { extractCritical } = createEmotionServer(cache);
+    const context: Http = { static: true };
 
     options = {
       isStatic: process.env.MODE === "server-only",
       isApp: template ? false : true,
       url,
       cache,
+      context,
       ...options,
     };
 
@@ -40,7 +43,13 @@ export default class Controller {
       if (error) {
         next(error);
       } else {
-        if (template && !layout) {
+        if (context.url) {
+          if (context.status) {
+            res.redirect(context.status, context.url);
+          } else {
+            res.redirect(context.url);
+          }
+        } else if (template && !layout) {
           res.send(html);
         } else {
           const helmet = Helmet.renderStatic();

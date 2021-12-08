@@ -7,10 +7,10 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ format, redirect, render }) {
+export function make({ format, render }) {
   format({
     "text/vnd.turbo-stream.html": () =>
       render({ template: "Registered", theme }),
-    "text/html": () => redirect("/"),
+    "text/html": () => render({ template: "Redirect", to: "/" }),
   });
 }
