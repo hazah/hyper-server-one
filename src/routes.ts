@@ -12,9 +12,10 @@ export default routes(
     root("home", display);
     resource("about", { only: display });
 
-    unauthenticated(({ resource, verbs: { fresh, make } }) => {
+    unauthenticated(({ resource, authenticate, verbs: { fresh, make } }) => {
       resource("register", { only: [fresh, make] });
-      resource("authenticate", { only: [fresh, make] });
+      resource("authenticate", { only: [fresh] });
+      authenticate("authenticate", make);
     });
 
     authenticated(({ resource, verbs: { erase, display } }) => {

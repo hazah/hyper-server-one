@@ -5,6 +5,7 @@ import Route from "./route";
 import Controller from "./controller";
 import UnauthenticatedRoute from "./unauthenticated_route";
 import AuthenticatedRoute from "./authenticated_route";
+import AuthenticationController from "./authentication_controller";
 
 type Builder = (methods: any) => void;
 type Verb = (module: any) => any;
@@ -14,10 +15,11 @@ export class Router {
   private children: Router[] = [];
 
   public constructor(builder: Builder, private parent?: Route) {
-    const { root, resource, authenticated, unauthenticated, verbs } = this;
+    const { root, resource, authenticate, authenticated, unauthenticated, verbs } = this;
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
+      authenticate: authenticate.bind(this),
       authenticated: authenticated.bind(this),
       unauthenticated: unauthenticated.bind(this),
       verbs: verbs,
@@ -81,6 +83,22 @@ export class Router {
       this.children.push(router);
     }
 
+    this.routes.push(route);
+  }
+
+  private authenticate(name: string, verb: Verb) {
+    const module = require(`@server/controllers/${name}`);
+    const { handler, path, method } = verb(module);
+    const controller = new AuthenticationController(handler);
+    
+    const route = new Route(name, {
+      mappings: {
+        [`/${name}${path}`]: {
+          [method]: controller.middleware,
+        },
+      },
+    });
+    
     this.routes.push(route);
   }
 

@@ -49,8 +49,7 @@ function formMethod(user: User): string {
 
 function formAction(user: User): string {
   return (
-    (user && ("email" in user ? "/eject" : "/authenticate")) ||
-    "/register"
+    (user && ("email" in user ? "/eject" : "/authenticate")) || "/register"
   );
 }
 
@@ -74,7 +73,7 @@ const Access: FunctionComponent<AccessProps> = ({
 
   return (
     <>
-      {(!user || !("email" in user)) ? (
+      {!user || !("email" in user) ? (
         <form
           onSubmit={useSubmitter(onSubmit, handleSubmit)}
           action={formAction(user)}
@@ -106,9 +105,18 @@ const Access: FunctionComponent<AccessProps> = ({
         </form>
       ) : (
         <>
-          <a href={formAction(user)} data-turbo-method={formMethod(user)} style={{ display: config.MODE === "server-only" ? "none" : undefined }}>{formActionName(user)}</a>
+          <a
+            href={formAction(user)}
+            data-turbo-method={formMethod(user)}
+            style={{
+              display: config.MODE === "server-only" ? "none" : undefined,
+            }}
+          >
+            {formActionName(user)}
+          </a>
           <noscript>
-            <form onSubmit={useSubmitter(onSubmit, handleSubmit)}
+            <form
+              onSubmit={useSubmitter(onSubmit, handleSubmit)}
               action={formAction(user)}
               {...method}
             >

@@ -1,9 +1,9 @@
 import React from "react";
 
-const Authenticated = () => (
+const Authenticated = ({ user }) => (
   <turbo-stream action="replace" target="message">
     <template>
-      <div id="message" data-turbo-permanent>Authenticated!</div>
+      <div id="message" data-turbo-permanent>{JSON.stringify(user)}</div>
     </template>
   </turbo-stream>
 );

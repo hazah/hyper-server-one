@@ -10,10 +10,11 @@ class Router {
   private children: Router[] = [];
 
   public constructor(builder: Builder, private parent?: Route) {
-    const { root, resource, authenticated, unauthenticated, verbs } = this;
+    const { root, resource, authenticate, authenticated, unauthenticated, verbs } = this;
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
+      authenticate: authenticate.bind(this),
       authenticated: authenticated.bind(this),
       unauthenticated: unauthenticated.bind(this),
       verbs: verbs,
@@ -75,11 +76,19 @@ class Router {
     }
   }
 
+  private authenticate(name: string, _verb: Verb) {
+    const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+    const component = require(`@app/screens/${componentName}`).default;
+    const route = new Route(name, { mappings: [name, component] });
+    this.routes.push(route);
+  }
+
   private unauthenticated(builder: Builder) {
-    const { root, resource, verbs } = this;
+    const { root, resource, authenticate, verbs } = this;
     builder({
       root: root.bind(this),
       resource: resource.bind(this),
+      authenticate: authenticate.bind(this),
       verbs: verbs,
     });
   }

@@ -6,7 +6,3 @@ passport.use(password);
 
 passport.serializeUser(serialize);
 passport.deserializeUser(deserialize);
-
-// passport.use(jwt);
-
-export default passport;

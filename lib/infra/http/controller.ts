@@ -7,6 +7,7 @@ import { Http } from "../HttpProvider";
 type HandlerMethods = {
   format: any;
   params: any;
+  user?: any;
   req: Request;
   render: (options: any) => void;
   end: (arg: any) => void;
@@ -92,7 +93,7 @@ export default class Controller {
     });
   }
 
-  public get middleware() {
+  public get middleware(): any {
     return (req: Request, res: Response, next: NextFunction) => {
       const format = (formats: any) => res.format(formats);
       const end = (arg: any) => res.end(arg);
@@ -101,8 +102,9 @@ export default class Controller {
       const redirect = (path: string) => res.redirect(path);
 
       const params = req.params;
+      const user = req.user;
 
-      this.handler({ format, render, end, redirect, params, req });
+      this.handler({ format, render, end, redirect, params, req, user });
     };
   }
 }
