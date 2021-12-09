@@ -17,10 +17,10 @@ const Navigation = () => (
         <Link to="/about">about</Link>
       </li>
       <li>
-        <Link to="/authenticate/new">authenticate</Link>
+        <Link to="/authenticate">authenticate</Link>
       </li>
       <li>
-        <Link to="/register/new">register</Link>
+        <Link to="/register">register</Link>
       </li>
       <li>
         <Link to="/profile">profile</Link>

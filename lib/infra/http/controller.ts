@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Helmet } from "react-helmet";
 import createEmotionServer from "@emotion/server/create-instance";
 import createCache from "@emotion/cache";
@@ -93,7 +93,7 @@ export default class Controller {
   }
 
   public get middleware() {
-    return (req: Request, res: Response, next: (error?: Error) => void) => {
+    return (req: Request, res: Response, next: NextFunction) => {
       const format = (formats: any) => res.format(formats);
       const end = (arg: any) => res.end(arg);
 

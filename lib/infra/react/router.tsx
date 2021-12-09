@@ -108,11 +108,11 @@ class Router {
   }
 
   private get fresh() {
-    return { path: "/new", method: "get" };
+    return { path: "", method: "get" };
   }
 
   private get make() {
-    return { path: "/new", method: "post" };
+    return { path: "", method: "post" };
   }
 
   private get erase() {

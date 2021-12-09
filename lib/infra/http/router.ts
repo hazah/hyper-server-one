@@ -3,11 +3,13 @@ import express from "express";
 
 import Route from "./route";
 import Controller from "./controller";
+import UnauthenticatedRoute from "./unauthenticated_route";
+import AuthenticatedRoute from "./authenticated_route";
 
 type Builder = (methods: any) => void;
 type Verb = (module: any) => any;
 
-class Router {
+export class Router {
   private routes: Route[] = [];
   private children: Router[] = [];
 
@@ -24,9 +26,11 @@ class Router {
 
   // generate router (currently expressjs) application
   public get router() {
-    this.children.forEach((child) => child.parent.path.all(child.router));
-
     const app = express().disable("x-powered-by");
+    
+    this.children.forEach((child) =>{
+      child.parent.route.use(child.routes.map((route) => route.route));
+    });
 
     this.routes.forEach((route) => app.use(route.route));
 
@@ -81,21 +85,15 @@ class Router {
   }
 
   private unauthenticated(builder: Builder) {
-    const { root, resource, verbs } = this;
-    builder({
-      root: root.bind(this),
-      resource: resource.bind(this),
-      verbs: verbs,
-    });
+    const route = new UnauthenticatedRoute();
+    this.children.push(new Router(builder, route));
+    this.routes.push(route);
   }
 
   private authenticated(builder: Builder) {
-    const { root, resource, verbs } = this;
-    builder({
-      root: root.bind(this),
-      resource: resource.bind(this),
-      verbs: verbs,
-    });
+    const route = new AuthenticatedRoute();
+    this.children.push(new Router(builder, route));
+    this.routes.push(route);
   }
 
   private get verbs() {
@@ -113,11 +111,11 @@ class Router {
   }
 
   private fresh({ fresh }) {
-    return { handler: fresh, path: "/new", method: "get" };
+    return { handler: fresh, path: "", method: "get" };
   }
 
   private make({ make }) {
-    return { handler: make, path: "/new", method: "post" };
+    return { handler: make, path: "", method: "post" };
   }
 
   private erase({ erase }) {
