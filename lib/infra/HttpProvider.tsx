@@ -42,4 +42,13 @@ export const Redirect = ({ to, status }) => {
   return <Navigate to={to} />;
 };
 
+export const Status = ({ status }) => {
+  const http = useHttp();
+
+  if (http.static) {
+    http.status = status;
+  }
+  return null;
+};
+
 export default HttpProvider;
