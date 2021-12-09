@@ -49,8 +49,8 @@ function formMethod(user: User): string {
 
 function formAction(user: User): string {
   return (
-    (user && ("email" in user ? "/eject" : "/authenticate/new")) ||
-    "/register/new"
+    (user && ("email" in user ? "/eject" : "/authenticate")) ||
+    "/register"
   );
 }
 
