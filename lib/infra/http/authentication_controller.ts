@@ -9,7 +9,12 @@ export default class AuthenticationController extends Controller {
         const authenticator = passport.authenticate(
           "local",
           (err, user, info) => {
-            
+            if (err) {
+              return next(err);
+            }
+            if (!user) {
+              return next('router');
+            }
             req.logIn(user, (err) => {
               if (err) {
                 return next(err);
