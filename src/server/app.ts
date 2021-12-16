@@ -4,7 +4,7 @@ import i18next from "i18next-http-middleware";
 import methodOverride from "method-override";
 import passport from "passport";
 
-import "auth";
+import "@server/auth";
 import i18n from "i18n";
 import routes from "routes";
 

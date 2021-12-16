@@ -1,16 +1,15 @@
-import { format } from "path";
 import theme from "theme";
 
-export function fresh({ format, render }) {
+export function fresh({ format, render, user }) {
   format({
-    html: () => render({ theme }),
+    html: () => render({ theme, user }),
   });
 }
 
-export function make({ format, render }) {
+export function make({ format, render, user }) {
   format({
     "text/vnd.turbo-stream.html": () =>
-      render({ template: "Registered", theme }),
+      render({ template: "Registered", theme, user }),
     "text/html": () => render({ template: "Redirect", to: "/" }),
   });
 }

@@ -15,7 +15,7 @@ export default class AuthenticationController extends Controller {
             if (!user) {
               return next('router');
             }
-            req.logIn(user, (err) => {
+            req.login(user, (err) => {
               if (err) {
                 return next(err);
               }

@@ -24,17 +24,19 @@ export const useAuth = (): Auth => {
 };
 
 export const AuthProvider = ({
+  user,
   children,
 }: {
+  user: any;
   children: ReactElement;
 }): ReactElement => {
-  const auth = useAuthentication();
+  const auth = useAuthentication(user);
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-export const useAuthentication = () => {
-  const [user, setUser] = useState(null);
+export const useAuthentication = (initialUser = null) => {
+  const [user, setUser] = useState(initialUser);
 
   const authenticate = async (username: string, password: string) => {
     setUser(await authenticator.authenticate({ username, password }));
@@ -53,6 +55,7 @@ export const useAuthentication = () => {
 };
 
 AuthProvider.propTypes = {
+  user: PropTypes.object,
   children: PropTypes.node.isRequired,
 };
 

@@ -1,8 +1,8 @@
 import theme from "theme";
 
-export function fresh({ format, render }) {
+export function fresh({ format, render, user }) {
   format({
-    html: () => render({ theme }),
+    html: () => render({ theme, user }),
   });
 }
 

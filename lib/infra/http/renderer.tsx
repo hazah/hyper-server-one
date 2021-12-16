@@ -7,6 +7,7 @@ import { CacheProvider } from "@emotion/react";
 import { Helmet } from "react-helmet";
 
 import HttpProvider, { Http } from "../HttpProvider";
+import AuthProvider from "../AuthProvider";
 
 let js: any;
 let css: any;
@@ -57,6 +58,14 @@ const withTheme = (theme: any, cache: any) => (
   );
 };
 
+const withUser = (user: any) => (Component: FunctionComponent) => {
+  return ({ ...props }) => (
+    <AuthProvider user={user}>
+      <Component {...props} />
+    </AuthProvider>
+  );
+};
+
 const withRouter = (url: string, context: Http) => (
   Component: FunctionComponent
 ) => {
@@ -73,7 +82,17 @@ const withRouter = (url: string, context: Http) => (
 
 export default async function jsxEngine(
   path: string,
-  { url, isStatic, isApp, isLayout, theme, cache, context, ...options }: any,
+  {
+    url,
+    isStatic,
+    isApp,
+    isLayout,
+    theme,
+    cache,
+    context,
+    user,
+    ...options
+  }: any,
   callback: (e: any, rendered?: string) => void
 ): Promise<void> {
   try {
@@ -82,6 +101,7 @@ export default async function jsxEngine(
     }`).default;
 
     Component = withRouter(url, context)(Component);
+    Component = withUser(user)(Component);
 
     if (isApp) {
       if (theme && cache) {
