@@ -5,7 +5,7 @@ import { styled } from "@mui/system";
 import { useAuth } from "@infra/AuthProvider";
 import Access from "@app/Access";
 
-const UL = styled("ul")({
+const Container = styled("ul")({
   margin: "0px",
 });
 
@@ -14,7 +14,7 @@ const Navigation = () => {
 
   return (
     <nav>
-      <UL>
+      <Container>
         <li>
           <Link to="/">home</Link>
         </li>
@@ -43,7 +43,7 @@ const Navigation = () => {
             </li>
           </>
         )}
-      </UL>
+      </Container>
     </nav>
   );
 }
