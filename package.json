@@ -13,7 +13,8 @@
     "export": "razzle export",
     "clean": "rm -rf build/ cache/ storybook-static/",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "start:db": "sudo service couchdb start"
   },
   "jest": {
     "moduleDirectories": [

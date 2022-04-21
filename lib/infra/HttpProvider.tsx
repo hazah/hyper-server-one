@@ -30,7 +30,7 @@ const HttpProvider = ({
   );
 };
 
-export const Redirect = ({ to, status }) => {
+export const Redirect = ({ to, status }: { to: string, status?: number }) => {
   const http = useHttp();
 
   if (http.static) {

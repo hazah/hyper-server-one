@@ -101,7 +101,7 @@ export default class Controller {
       const render = (options: any) => this.render(req, res, next, options);
       const redirect = (path: string) => res.redirect(path);
 
-      const params = req.params;
+      const params = { ...req.params, ...req.body, };
       const user = req.user;
 
       this.handler({ format, render, end, redirect, params, req, user });

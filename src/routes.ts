@@ -8,7 +8,7 @@ import routes from "@infra/router";
 // index, display, fresh, make, revise, amend, erase
 
 export default routes(
-  ({ root, resource, authenticated, eject, unauthenticated, verbs: { erase, display } }) => {
+  ({ root, resource, authenticated, eject, unauthenticated, verbs: { display } }) => {
     root("home", display);
     resource("about", { only: display });
 
@@ -18,10 +18,9 @@ export default routes(
       authenticate("authenticate", make);
     });
 
-    authenticated(({ resource, verbs: { display } }) => {
+    authenticated(({ resource, verbs: { erase, display } }) => {
       resource("profile", { only: display });
+      eject("eject", erase);
     });
-
-    eject("eject", erase);
   }
 );
