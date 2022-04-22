@@ -2,7 +2,7 @@ import React, { BaseSyntheticEvent, FunctionComponent } from "react";
 import PropTypes from "prop-types";
 import { useForm, SubmitHandler, UseFormHandleSubmit } from "react-hook-form";
 
-import config from "config";
+import config from "../config";
 
 type FormFields = {
   email?: string;

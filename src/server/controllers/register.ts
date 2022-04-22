@@ -11,8 +11,6 @@ export function fresh({ format, render, user }) {
 }
 
 export async function make({ format, render, user, params }) {
-  console.log(params);
-  
   const users = new PouchDB("http://localhost:5984/_users", {
     skip_setup: true,
     auth: {

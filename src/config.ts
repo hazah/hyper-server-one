@@ -1,5 +1,5 @@
 const config =
-  typeof window !== "undefined"
+  typeof window !== "undefined" && typeof window.env !== "undefined"
     ? {
         NODE_ENV: window.env.NODE_ENV,
         MODE: window.env.MODE,
