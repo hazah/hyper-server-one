@@ -1,5 +1,4 @@
-import authDB from "@server/auth/db";
-import getUserDBName from "@util/user_db_name";
+import { register } from "@server/auth/password";
 
 export { theme } from "theme";
 
@@ -9,40 +8,18 @@ export function fresh({ format, render }) {
   });
 }
 
-export async function make({ format, render, params, req, next }) {
-  const { email, password } = params;
-  try {
-    const users = await authDB();
-    const response = await users.signUp(btoa(email), password);
-
-    if (response.ok) {
-      const response = await users.logIn(btoa(email), password);
-
-      if (response.ok) {
-        const userDBName = getUserDBName(email);
-
-        req.login({ userDBName, email, ...response }, (err) => {
-          if (err) {
-            return next(err);
-          }
-        });
+export async function make({ format, render, params: { email, password}, req, next }) {
+  register(email, password, (error: any, user?: any): void => {
+    req.login(user, (error) => {
+      if (error) {
+        return next(error);
       }
-    }
-  } catch (err) {
-    console.error(err);
-    if (err.name === 'conflict') {
-      // "batman" already exists, choose another username
-    } else if (err.name === 'forbidden') {
-      // invalid username
-    } else {
-      // HTTP error, cosmic rays, etc.
-    }
-    return next(err);
-  }
-
-  format({
-    "text/vnd.turbo-stream.html": () =>
-      render({ template: "Registered" }),
-    "text/html": () => render({ template: "Redirect", to: "/" }),
+  
+      format({
+        "text/vnd.turbo-stream.html": () =>
+          render({ template: "Registered" }),
+        "text/html": () => render({ template: "Redirect", to: "/" }),
+      });
+    });
   });
 }

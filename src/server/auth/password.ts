@@ -12,23 +12,58 @@ const password = new Strategy(
     password: string,
     done: (error: any, user?: any, options?: IVerifyOptions) => void
   ) => {
-    try {
-      const users = await authDB();
-      const response = await users.logIn(btoa(email), password);
-
-      if (response.ok) {
-        const userDBName = getUserDBName(email);
-
-        done(null, { userDBName, email, ...response });
-      } else {
-        done(response);
-      }
-    } catch (err) {
-      console.error(err);
-      done(err);
-    }
+    return await login(email, password, done);
   }
 );
+
+export const login = async (
+  email: string,
+  password: string,
+  done: (error: any, user?: any) => void
+) => {
+  try {
+    const users = await authDB();
+    const response = await users.logIn(btoa(email), password);
+
+    if (response.ok) {
+      const userDBName = getUserDBName(email);
+
+      done(null, { userDBName, email, ...response });
+    } else {
+      done(response);
+    }
+  } catch (error) {
+    console.error(error);
+    done(error);
+  }
+};
+
+export const register = async (
+  email: string,
+  password: string,
+  done: (error: any, user?: any) => void
+) => {
+  try {
+    const users = await authDB();
+    const response = await users.signUp(btoa(email), password);
+
+    if (response.ok) {
+      return await login(email, password, done);
+    } else {
+      done(response);
+    }
+  } catch (error) {
+    if (error.name === 'conflict') {
+      // "batman" already exists, choose another username
+    } else if (error.name === 'forbidden') {
+      // invalid username
+    } else {
+      // HTTP error, cosmic rays, etc.
+    }
+    console.error(error);
+    done(error);
+  }
+};
 
 export default password;
 
