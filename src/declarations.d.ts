@@ -1,30 +1,35 @@
 // https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules
 
-declare module "*.svg" {
+export declare module "*.svg" {
   const src: string;
   export default src;
 }
 
-declare global {
+export declare global {
   namespace JSX {
     interface IntrinsicElements {
       "turbo-stream": any;
     }
   }
-  
+
   namespace Express {
-    export interface Request {
+    interface Request {
       // usersDb?: PouchDB.Database;
       session?: { passport: { user: { username: string } } };
     }
   }
 
-  // namespace PouchDB {
-  //   export interface Database {
-  //     putSecurity(doc, cb?);
-  //     useAsAuthenticationDB();
-  //     signUp(name, password);
-  //     logIn(name, password);
-  //   }
-  // }
+  namespace PouchDB {
+    interface Database {
+      putSecurity(doc, cb?);
+      useAsAuthenticationDB();
+      signUp(name, password);
+      logIn(name, password);
+    }
+  }
+
+  interface Window {
+    env: { [envVariable: string]: string | number };
+    __WB_MANIFEST: any;
+  }
 }

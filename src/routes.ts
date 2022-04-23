@@ -8,17 +8,19 @@ import routes from "@infra/router";
 // index, display, fresh, make, revise, amend, erase
 
 export default routes(
-  ({ root, resource, authenticated, unauthenticated, verbs: { display } }) => {
+  ({ root, resource, authenticated, eject, unauthenticated, verbs: { display } }) => {
     root("home", display);
     resource("about", { only: display });
 
-    unauthenticated(({ resource, verbs: { fresh, make } }) => {
+    unauthenticated(({ resource, authenticate, verbs: { fresh, make } }) => {
       resource("register", { only: [fresh, make] });
-      resource("authenticate", { only: [fresh, make] });
+      resource("authenticate", { only: fresh });
+      authenticate("authenticate", make);
     });
 
-    authenticated(({ resource, verbs: { erase } }) => {
-      resource("eject", { only: erase });
+    authenticated(({ resource, verbs: { erase, display } }) => {
+      resource("profile", { only: display });
+      eject("eject", erase);
     });
   }
 );

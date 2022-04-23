@@ -1,11 +1,12 @@
 import React from "react";
 
 import { Story, Meta } from "@storybook/react";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 
 import Access, { AccessProps } from "./Access";
 
 import theme from "../theme";
-import { Helmet } from "react-helmet";
 
 export default {
   component: Access,
@@ -14,15 +15,10 @@ export default {
 } as Meta;
 
 const FormTemplate: Story<AccessProps> = (args) => (
-  <>
-    <Helmet>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap"
-        rel="stylesheet"
-      />
-    </Helmet>
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
     <Access {...args} />
-  </>
+  </ThemeProvider>
 );
 
 export const RegisterationForm = FormTemplate.bind({});

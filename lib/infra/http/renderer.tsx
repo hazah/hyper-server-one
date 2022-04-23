@@ -6,6 +6,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider } from "@emotion/react";
 import { Helmet } from "react-helmet";
 
+import HttpProvider, { Http } from "../HttpProvider";
+import AuthProvider from "../AuthProvider";
+
 let js: any;
 let css: any;
 
@@ -55,19 +58,41 @@ const withTheme = (theme: any, cache: any) => (
   );
 };
 
-const withRouter = (url: string) => (Component: FunctionComponent) => {
+const withUser = (user: any) => (Component: FunctionComponent) => {
+  return ({ ...props }) => (
+    <AuthProvider user={user}>
+      <Component {...props} />
+    </AuthProvider>
+  );
+};
+
+const withRouter = (url: string, context: Http) => (
+  Component: FunctionComponent
+) => {
   return ({ ...props }): JSX.Element => {
     return (
-      <StaticRouter location={url}>
-        <Component {...props} />
-      </StaticRouter>
+      <HttpProvider context={context}>
+        <StaticRouter location={url}>
+          <Component {...props} />
+        </StaticRouter>
+      </HttpProvider>
     );
   };
 };
 
 export default async function jsxEngine(
   path: string,
-  { url, isStatic, isApp, isLayout, theme, cache, ...options }: any,
+  {
+    url,
+    isStatic,
+    isApp,
+    isLayout,
+    theme,
+    cache,
+    context,
+    user,
+    ...options
+  }: any,
   callback: (e: any, rendered?: string) => void
 ): Promise<void> {
   try {
@@ -75,11 +100,16 @@ export default async function jsxEngine(
       path.substring(0, path.length - 4).split("/app/")[1]
     }`).default;
 
+    Component = withRouter(url, context)(Component);
+    Component = withUser(user)(Component);
+
     if (isApp) {
-      Component = withRouter(url)(Component);
-      Component = withTheme(theme, cache)(Component);
+      if (theme && cache) {
+        Component = withTheme(theme, cache)(Component);
+      }
+
       Component = withAssets()(Component);
-    } else if (!isLayout) {
+    } else if (!isLayout && theme && cache) {
       Component = withTheme(theme, cache)(Component);
     }
 
