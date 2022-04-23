@@ -1,4 +1,4 @@
-import authDB from "../auth_db";
+import authDB from "@server/auth/db";
 import getUserDBName from "@util/user_db_name";
 
 export { theme } from "theme";

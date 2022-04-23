@@ -1,5 +1,5 @@
 import { IVerifyOptions, Strategy } from "passport-local";
-import authDB from "../auth_db";
+import authDB from "@server/auth/db";
 import getUserDBName from "@util/user_db_name";
 
 const password = new Strategy(

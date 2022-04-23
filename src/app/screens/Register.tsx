@@ -1,6 +1,6 @@
 import React from "react";
 
-import Access from "@app/Access";
+import Access from "@components/Access";
 
 const Register = () => <Access onSubmit={() => null} />;
 

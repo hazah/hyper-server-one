@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 
 import Access, { AccessProps } from "./Access";
 
-import theme from "../theme";
+import theme from "../../theme";
 
 export default {
   component: Access,
