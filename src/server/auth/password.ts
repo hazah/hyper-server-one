@@ -1,5 +1,6 @@
 import { IVerifyOptions, Strategy } from "passport-local";
 import authDB from "../auth_db";
+import getUserDBName from "@util/user_db_name";
 
 const password = new Strategy(
   {
@@ -16,10 +17,7 @@ const password = new Strategy(
       const response = await users.logIn(btoa(email), password);
 
       if (response.ok) {
-        const usernameHex = Array.from(btoa(email))
-          .map((c) => c.charCodeAt(0).toString(16))
-          .join("");
-        const userDBName = `userdb-${usernameHex}`;
+        const userDBName = getUserDBName(email);
 
         done(null, { userDBName, email, ...response });
       } else {

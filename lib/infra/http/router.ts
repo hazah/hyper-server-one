@@ -41,10 +41,10 @@ export class Router {
     return app;
   }
 
-  private root(name: string, verb: Verb) {
+  private root(name: string, verb: Verb): void {
     const module = require(`@server/controllers/${name}`);
     const { handler, path } = verb(module);
-    const controller = new Controller(handler);
+    const controller = new Controller(handler, module.theme);
     const route = new Route(name, {
       mappings: {
         [`/${path}`]: {
@@ -59,14 +59,14 @@ export class Router {
     name: string,
     options: { only: Verb | Verb[] },
     builder?: Builder
-  ) {
+  ): void {
     const module = require(`@server/controllers/${name}`);
     const { only } = options;
 
     const route = new Route(name, {
       mappings: [].concat(only).reduce((map, verb) => {
         const { handler, path, method } = verb(module);
-        const controller = new Controller(handler);
+        const controller = new Controller(handler, module.theme);
         const key = `/${name}${path}`;
 
         if (map[key] === undefined) {
@@ -88,10 +88,10 @@ export class Router {
     this.routes.push(route);
   }
 
-  private authenticate(name: string, verb: Verb) {
+  private authenticate(name: string, verb: Verb): void {
     const module = require(`@server/controllers/${name}`);
     const { handler, path, method } = verb(module);
-    const controller = new AuthenticationController(handler);
+    const controller = new AuthenticationController(handler, module.theme);
     
     const route = new Route(name, {
       mappings: {
@@ -104,10 +104,10 @@ export class Router {
     this.routes.push(route);
   }
 
-  private eject(name: string, verb: Verb) {
+  private eject(name: string, verb: Verb): void {
     const module = require(`@server/controllers/${name}`);
     const { handler, path, method } = verb(module);
-    const controller = new EjectionController(handler);
+    const controller = new EjectionController(handler, module.theme);
     
     const route = new Route(name, {
       mappings: {
@@ -120,13 +120,13 @@ export class Router {
     this.routes.push(route);
   }
 
-  private unauthenticated(builder: Builder) {
+  private unauthenticated(builder: Builder): void {
     const route = new UnauthenticatedRoute();
     this.children.push(new Router(builder, route));
     this.routes.push(route);
   }
 
-  private authenticated(builder: Builder) {
+  private authenticated(builder: Builder): void {
     const route = new AuthenticatedRoute();
     this.children.push(new Router(builder, route));
     this.routes.push(route);

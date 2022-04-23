@@ -1,17 +1,33 @@
-import theme from "theme";
 import authDB from "../auth_db";
+import getUserDBName from "@util/user_db_name";
 
-export function fresh({ format, render, user }) {
+export { theme } from "theme";
+
+export function fresh({ format, render }) {
   format({
-    html: () => render({ theme, user }),
+    html: () => render(),
   });
 }
 
-export async function make({ format, render, user, params }) {
+export async function make({ format, render, params, req, next }) {
   const { email, password } = params;
   try {
     const users = await authDB();
     const response = await users.signUp(btoa(email), password);
+
+    if (response.ok) {
+      const response = await users.logIn(btoa(email), password);
+
+      if (response.ok) {
+        const userDBName = getUserDBName(email);
+
+        req.login({ userDBName, email, ...response }, (err) => {
+          if (err) {
+            return next(err);
+          }
+        });
+      }
+    }
   } catch (err) {
     console.error(err);
     if (err.name === 'conflict') {
@@ -21,12 +37,12 @@ export async function make({ format, render, user, params }) {
     } else {
       // HTTP error, cosmic rays, etc.
     }
-    throw err;
+    return next(err);
   }
 
   format({
     "text/vnd.turbo-stream.html": () =>
-      render({ template: "Registered", theme, user }),
+      render({ template: "Registered" }),
     "text/html": () => render({ template: "Redirect", to: "/" }),
   });
 }

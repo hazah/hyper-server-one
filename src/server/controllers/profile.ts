@@ -1,7 +1,7 @@
-import theme from "theme";
+export { theme } from "theme";
 
-export function display({ format, render, user }) {
+export function display({ format, render }) {
   format({
-    html: () => render({ theme, user }),
+    html: () => render(),
   });
 }
