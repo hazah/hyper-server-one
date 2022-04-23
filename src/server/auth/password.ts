@@ -1,5 +1,6 @@
 import { IVerifyOptions, Strategy } from "passport-local";
 import authDB from "@server/auth/db";
+import eventsDB from "@app/events/db";
 import getUserDBName from "@util/user_db_name";
 
 const password = new Strategy(
@@ -28,6 +29,12 @@ export const login = async (
     if (response.ok) {
       const userDBName = getUserDBName(email);
 
+      const events = await eventsDB(userDBName);
+
+      events.post({
+        name: 'login'
+      });
+
       done(null, { userDBName, email, ...response });
     } else {
       done(response);
@@ -48,6 +55,12 @@ export const register = async (
     const response = await users.signUp(btoa(email), password);
 
     if (response.ok) {
+      const events = await eventsDB(getUserDBName(email));
+
+      events.post({
+        name: 'register'
+      });
+
       return await login(email, password, done);
     } else {
       done(response);

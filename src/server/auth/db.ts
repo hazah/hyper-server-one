@@ -13,5 +13,6 @@ export default async () => {
   });
 
   await users.useAsAuthenticationDB();
+
   return users;
 };
