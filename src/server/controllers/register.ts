@@ -1,8 +1,5 @@
 import theme from "theme";
-import PouchDB from "pouchdb";
-import DatabaseAuthentication from "pouchdb-auth";
-
-PouchDB.plugin(DatabaseAuthentication);
+import authDB from "../auth_db";
 
 export function fresh({ format, render, user }) {
   format({
@@ -11,23 +8,12 @@ export function fresh({ format, render, user }) {
 }
 
 export async function make({ format, render, user, params }) {
-  const users = new PouchDB("http://localhost:5984/_users", {
-    skip_setup: true,
-    auth: {
-      username: "admin",
-      password: "admin"
-    }
-  });
-  
-  await users.useAsAuthenticationDB();
-
   const { email, password } = params;
-
   try {
+    const users = await authDB();
     const response = await users.signUp(btoa(email), password);
-    console.log(response);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     if (err.name === 'conflict') {
       // "batman" already exists, choose another username
     } else if (err.name === 'forbidden') {
@@ -35,6 +21,7 @@ export async function make({ format, render, user, params }) {
     } else {
       // HTTP error, cosmic rays, etc.
     }
+    throw err;
   }
 
   format({

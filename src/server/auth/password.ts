@@ -1,8 +1,5 @@
 import { IVerifyOptions, Strategy } from "passport-local";
-import PouchDB from "pouchdb";
-import DatabaseAuthentication from "pouchdb-auth";
-
-PouchDB.plugin(DatabaseAuthentication);
+import authDB from "../auth_db";
 
 const password = new Strategy(
   {
@@ -14,13 +11,9 @@ const password = new Strategy(
     password: string,
     done: (error: any, user?: any, options?: IVerifyOptions) => void
   ) => {
-    const users = new PouchDB("http://localhost:5984/_users");
-    await users.useAsAuthenticationDB();
-
     try {
+      const users = await authDB();
       const response = await users.logIn(btoa(email), password);
-
-      console.log(response);
 
       if (response.ok) {
         const usernameHex = Array.from(btoa(email))
@@ -28,15 +21,13 @@ const password = new Strategy(
           .join("");
         const userDBName = `userdb-${usernameHex}`;
 
-        console.log(userDBName);
-
-        done(null, { userDBName, ...response });
+        done(null, { userDBName, email, ...response });
       } else {
         done(response);
       }
     } catch (err) {
-      console.log(err);
-      throw err;
+      console.error(err);
+      done(err);
     }
   }
 );
