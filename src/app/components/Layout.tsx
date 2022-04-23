@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
 
-import Navigation from "@app/Navigation";
+import Navigation from "@components/Navigation";
 
 const Wrapper = styled("div")({
   height: "100%",

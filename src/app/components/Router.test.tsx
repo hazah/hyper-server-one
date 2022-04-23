@@ -1,7 +1,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import Router from "@app/Router";
+import Router from "@components/Router";
 
 import i18n from "i18n";
 
