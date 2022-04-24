@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Helmet } from "react-helmet";
 import createEmotionServer from "@emotion/server/create-instance";
 import createCache from "@emotion/cache";
+import { Theme } from "@emotion/react";
 import { Http } from "../HttpProvider";
 
 type HandlerMethods = {
@@ -12,12 +13,13 @@ type HandlerMethods = {
   render: (options: any) => void;
   end: (arg: any) => void;
   redirect: (path: string) => void;
+  next: NextFunction;
 };
 
 type Handler = (methods: HandlerMethods) => void;
 
 export default class Controller {
-  public constructor(private handler: Handler) {}
+  public constructor(private handler: Handler, private theme?: Theme) {}
 
   private render(
     req: Request,
@@ -95,16 +97,18 @@ export default class Controller {
 
   public get middleware(): any {
     return (req: Request, res: Response, next: NextFunction) => {
+      const user = req.user;
+      const theme = this.theme;
+      
       const format = (formats: any) => res.format(formats);
       const end = (arg: any) => res.end(arg);
 
-      const render = (options: any) => this.render(req, res, next, options);
+      const render = (options: any) => this.render(req, res, next, { user, theme, ...options });
       const redirect = (path: string) => res.redirect(path);
 
       const params = { ...req.params, ...req.body, };
-      const user = req.user;
 
-      this.handler({ format, render, end, redirect, params, req, user });
+      this.handler({ format, render, end, redirect, params, req, user, next });
     };
   }
 }

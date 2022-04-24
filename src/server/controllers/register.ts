@@ -1,32 +1,25 @@
-import theme from "theme";
-import authDB from "../auth_db";
+import { register } from "@server/auth/password";
 
-export function fresh({ format, render, user }) {
+export { theme } from "theme";
+
+export function fresh({ format, render }) {
   format({
-    html: () => render({ theme, user }),
+    html: () => render(),
   });
 }
 
-export async function make({ format, render, user, params }) {
-  const { email, password } = params;
-  try {
-    const users = await authDB();
-    const response = await users.signUp(btoa(email), password);
-  } catch (err) {
-    console.error(err);
-    if (err.name === 'conflict') {
-      // "batman" already exists, choose another username
-    } else if (err.name === 'forbidden') {
-      // invalid username
-    } else {
-      // HTTP error, cosmic rays, etc.
-    }
-    throw err;
-  }
-
-  format({
-    "text/vnd.turbo-stream.html": () =>
-      render({ template: "Registered", theme, user }),
-    "text/html": () => render({ template: "Redirect", to: "/" }),
+export async function make({ format, render, params: { email, password}, req, next }) {
+  register(email, password, (error: any, user?: any): void => {
+    req.login(user, (error) => {
+      if (error) {
+        return next(error);
+      }
+  
+      format({
+        "text/vnd.turbo-stream.html": () =>
+          render({ template: "Registered" }),
+        "text/html": () => render({ template: "Redirect", to: "/" }),
+      });
+    });
   });
 }

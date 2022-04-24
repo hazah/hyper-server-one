@@ -1,5 +1,7 @@
 import { IVerifyOptions, Strategy } from "passport-local";
-import authDB from "../auth_db";
+import authDB from "@server/auth/db";
+import eventsDB from "@app/events/db";
+import getUserDBName from "@util/user_db_name";
 
 const password = new Strategy(
   {
@@ -11,26 +13,80 @@ const password = new Strategy(
     password: string,
     done: (error: any, user?: any, options?: IVerifyOptions) => void
   ) => {
-    try {
-      const users = await authDB();
-      const response = await users.logIn(btoa(email), password);
-
-      if (response.ok) {
-        const usernameHex = Array.from(btoa(email))
-          .map((c) => c.charCodeAt(0).toString(16))
-          .join("");
-        const userDBName = `userdb-${usernameHex}`;
-
-        done(null, { userDBName, email, ...response });
-      } else {
-        done(response);
-      }
-    } catch (err) {
-      console.error(err);
-      done(err);
-    }
+    return await login(email, password, done);
   }
 );
+
+export const login = async (
+  email: string,
+  password: string,
+  done: (error: any, user?: any) => void,
+  sendEvent: boolean = true
+) => {
+  try {
+    const users = await authDB();
+    const response = await users.logIn(btoa(email), password);
+
+    if (response.ok) {
+      const userDBName = getUserDBName(email);
+
+      if (sendEvent) {
+        const events = await eventsDB(userDBName);
+
+        events.post({
+          name: 'login',
+          timestamp: Date.now(),
+        });
+      }
+
+      done(null, { userDBName, email, ...response });
+    } else {
+      done(response);
+    }
+  } catch (error) {
+    console.error('login', error);
+    done(error);
+  }
+};
+
+export const register = async (
+  email: string,
+  password: string,
+  done: (error: any, user?: any) => void
+) => {
+  try {
+    const users = await authDB();
+    const response = await users.signUp(btoa(email), password);
+
+    if (response.ok) {
+      await login(email, password, done, false);
+
+      const events = await eventsDB(getUserDBName(email));
+
+      events.post({
+        name: 'register',
+        timestamp: Date.now(),
+      });
+      
+      events.post({
+        name: 'login',
+        timestamp: Date.now(),
+      });
+    } else {
+      done(response);
+    }
+  } catch (error) {
+    if (error.name === 'conflict') {
+      // "batman" already exists, choose another username
+    } else if (error.name === 'forbidden') {
+      // invalid username
+    } else {
+      // HTTP error, cosmic rays, etc.
+    }
+    console.error('register:', error);
+    done(error);
+  }
+};
 
 export default password;
 

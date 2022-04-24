@@ -25,6 +25,8 @@ export declare global {
       useAsAuthenticationDB();
       signUp(name, password);
       logIn(name, password);
+      logOut();
+      session();
     }
   }
 

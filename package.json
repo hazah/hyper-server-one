@@ -26,6 +26,7 @@
       "^@domain/(.*)": "<rootDir>/lib/domain/$1",
       "^@infra/(.*)": "<rootDir>/lib/infra/$1",
       "^@util/(.*)": "<rootDir>/lib/util/$1",
+      "^@components/(.*)": "<rootDir>/src/app/components/$1",
       "^@app/(.*)": "<rootDir>/src/app/$1"
     }
   },

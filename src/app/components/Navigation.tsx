@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
 
 import { useAuth } from "@infra/AuthProvider";
-import Access from "@app/Access";
+import Access from "@components/Access";
 
 const Container = styled("ul")({
   margin: "0px",

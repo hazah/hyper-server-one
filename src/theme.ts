@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
-const theme = createTheme({
+export const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {

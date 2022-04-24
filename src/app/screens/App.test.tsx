@@ -6,7 +6,7 @@ import App from "@app/screens/App";
 import i18n from "i18n";
 
 let getByText;
-let initialEntries;
+let initialEntries: string[];
 
 const { homeTitle, aboutTitle } = i18n.getDataByLanguage("en").translation;
 

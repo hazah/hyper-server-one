@@ -20,6 +20,7 @@
       "@domain/*": ["../lib/domain/*"],
       "@infra/*": ["../lib/infra/*"],
       "@util/*": ["../lib/util/*"],
+      "@components/*": ["app/components/*"],
       "@app/*": ["app/*"],
       "@client/*": ["client/*"],
       "@server/*": ["server/*"]
