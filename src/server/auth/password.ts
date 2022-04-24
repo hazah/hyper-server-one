@@ -20,7 +20,8 @@ const password = new Strategy(
 export const login = async (
   email: string,
   password: string,
-  done: (error: any, user?: any) => void
+  done: (error: any, user?: any) => void,
+  sendEvent: boolean = true
 ) => {
   try {
     const users = await authDB();
@@ -29,18 +30,21 @@ export const login = async (
     if (response.ok) {
       const userDBName = getUserDBName(email);
 
-      const events = await eventsDB(userDBName);
+      if (sendEvent) {
+        const events = await eventsDB(userDBName);
 
-      events.post({
-        name: 'login'
-      });
+        events.post({
+          name: 'login',
+          timestamp: Date.now(),
+        });
+      }
 
       done(null, { userDBName, email, ...response });
     } else {
       done(response);
     }
   } catch (error) {
-    console.error(error);
+    console.error('login', error);
     done(error);
   }
 };
@@ -55,13 +59,19 @@ export const register = async (
     const response = await users.signUp(btoa(email), password);
 
     if (response.ok) {
+      await login(email, password, done, false);
+
       const events = await eventsDB(getUserDBName(email));
 
       events.post({
-        name: 'register'
+        name: 'register',
+        timestamp: Date.now(),
       });
-
-      return await login(email, password, done);
+      
+      events.post({
+        name: 'login',
+        timestamp: Date.now(),
+      });
     } else {
       done(response);
     }
@@ -73,7 +83,7 @@ export const register = async (
     } else {
       // HTTP error, cosmic rays, etc.
     }
-    console.error(error);
+    console.error('register:', error);
     done(error);
   }
 };

@@ -23,7 +23,7 @@ export default async (userDBName: string) => {
       include_docs: true
     }).on('change', async (change) => replayEvent(change)
     ).on('complete', () => {}
-    ).on('error', (err) => console.error(err));
+    ).on('error', (err) => console.error('replay: ', err));
 
     events[userDBName].changes({
       since: 'now',
@@ -31,7 +31,7 @@ export default async (userDBName: string) => {
       include_docs: true
     }).on('change', async (change) => handleEvent(change)
     ).on('complete', () => {}
-    ).on('error', (err) => console.error(err));
+    ).on('error', (err) => console.error('handle: ', err));
   }
 
   return events[userDBName];
