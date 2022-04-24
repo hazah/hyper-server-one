@@ -15,7 +15,7 @@ export async function erase({ format, render }) {
   if (response.ok) {
     const events = await eventsDB(getUserDBName(email));
 
-    events.post({
+    await events.post({
       name: 'logout',
       timestamp: Date.now(),
     });

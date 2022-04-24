@@ -14,9 +14,9 @@ export default async () => {
         password: "admin"
       }
     });
-  }
 
-  await users.useAsAuthenticationDB();
+    await users.useAsAuthenticationDB();
+  }
 
   return users;
 };

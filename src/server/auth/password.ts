@@ -33,7 +33,7 @@ export const login = async (
       if (sendEvent) {
         const events = await eventsDB(userDBName);
 
-        events.post({
+        await events.post({
           name: 'login',
           timestamp: Date.now(),
         });
@@ -63,12 +63,12 @@ export const register = async (
 
       const events = await eventsDB(getUserDBName(email));
 
-      events.post({
+      await events.post({
         name: 'register',
         timestamp: Date.now(),
       });
       
-      events.post({
+      await events.post({
         name: 'login',
         timestamp: Date.now(),
       });
