@@ -72,8 +72,9 @@ module.exports = {
   }) {
     if (target === "web") {
       // client only
-      if (process.env.MODE === "server") {
-        webpackConfig.entry.client = path.join(__dirname, '/src/server_client');
+      if (process.env.MODE === "server-only") {
+        // assumes that javascript is quite possibly unavailable, uses progressive enhancement if it is.
+        webpackConfig.entry.client = path.join(__dirname, '/src/server/client');
       }
     }
     if (target === "node") {

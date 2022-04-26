@@ -1,37 +1,42 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { createContext, ReactElement, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-import authenticator from 'client/auth';
+import React, {
+  createContext,
+  ReactElement,
+  useContext,
+  useState,
+} from "react";
+import PropTypes from "prop-types";
+import authenticator from "../../src/client/auth";
 
 type Auth = {
   authenticate: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   user: any;
-}
+};
 
 const AuthContext = createContext<Auth>(undefined);
 
 export const useAuth = (): Auth => {
   const auth = useContext(AuthContext);
   if (!auth) {
-    throw new Error('useAuth must be used within a AuthProvider.');
+    throw new Error("useAuth must be used within a AuthProvider.");
   }
   return auth;
 };
 
-export const AuthProvider = ({ children }: { children: ReactElement }): ReactElement => {
-  const auth = useAuthentication();
-  
-  return (
-    <AuthContext.Provider value={auth}>
-      {children}
-    </AuthContext.Provider>
-  );
+export const AuthProvider = ({
+  user,
+  children,
+}: {
+  user: any;
+  children: ReactElement;
+}): ReactElement => {
+  const auth = useAuthentication(user);
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-export const useAuthentication = () => {
-  const [ user, setUser ] = useState(null);
+export const useAuthentication = (initialUser = null) => {
+  const [user, setUser] = useState(initialUser);
 
   const authenticate = async (username: string, password: string) => {
     setUser(await authenticator.authenticate({ username, password }));
@@ -50,6 +55,7 @@ export const useAuthentication = () => {
 };
 
 AuthProvider.propTypes = {
+  user: PropTypes.object,
   children: PropTypes.node.isRequired,
 };
 

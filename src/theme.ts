@@ -1,10 +1,13 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material/styles";
 
-const theme = createMuiTheme({
-  overrides: {
+export const theme = createTheme({
+  components: {
     MuiCssBaseline: {
-      "@global": {
+      styleOverrides: {
         html: {
+          height: "100%",
+        },
+        body: {
           height: "100%",
         },
       },
