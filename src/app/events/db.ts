@@ -1,11 +1,64 @@
 import PouchDB from "pouchdb";
+import queriesDB from "@app/events/queries";
+import commandsDB from "@app/events/commands";
 
 let events: { [key: string]: PouchDB.Database<{}> } = {};
 
 function replayEvent(event: PouchDB.Core.ChangesResponseChange<{}>) {
 }
 
-function handleEvent(event: PouchDB.Core.ChangesResponseChange<{}>) {
+async function handleEvent(userDBName: string, event: PouchDB.Core.ChangesResponseChange<{}>) {
+  const { doc } = event;
+  const { name } = (doc as any);
+
+  switch ((doc as any).type) {
+    case 'query':
+      const queries = await queriesDB(userDBName);
+
+      await queries.post({
+        name: name,
+        timestamp: Date.now(),
+      });
+      break;
+    case 'command':
+      const commands = await commandsDB(userDBName);
+
+      await commands.post({
+        name: name,
+        timestamp: Date.now(),
+      });
+      break;
+  }
+  if (name === 'register') {
+    const commands = await commandsDB(userDBName);
+
+    await commands.post({
+      name: 'insert_user',
+      timestamp: Date.now(),
+    });
+  }
+  if (name === 'login') {
+    const queries = await queriesDB(userDBName);
+
+    await queries.post({
+      name: 'user',
+      timestamp: Date.now(),
+    });
+    const commands = await commandsDB(userDBName);
+
+    await commands.post({
+      name: 'start_session',
+      timestamp: Date.now(),
+    });
+  }
+  if (name === 'logout') {
+    const commands = await commandsDB(userDBName);
+
+    await commands.post({
+      name: 'stop_session',
+      timestamp: Date.now(),
+    });
+  }
 }
 
 export default async (userDBName: string) => {
@@ -29,7 +82,7 @@ export default async (userDBName: string) => {
       since: 'now',
       live: true,
       include_docs: true
-    }).on('change', async (change) => handleEvent(change)
+    }).on('change', async (change) => handleEvent(userDBName, change)
     ).on('complete', () => {}
     ).on('error', (err) => console.error('handle: ', err));
   }
