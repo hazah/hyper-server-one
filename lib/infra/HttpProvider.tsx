@@ -30,6 +30,11 @@ const HttpProvider = ({
   );
 };
 
+HttpProvider.propTypes = {
+  context: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
 export const Redirect = ({ to, status }: { to: string, status?: number }) => {
   const http = useHttp();
 
@@ -40,6 +45,11 @@ export const Redirect = ({ to, status }: { to: string, status?: number }) => {
     return null;
   }
   return <Navigate to={to} />;
+};
+
+Redirect.propTypes = {
+  to: PropTypes.string.isRequired,
+  status: PropTypes.number,
 };
 
 export const Status = ({ status }) => {

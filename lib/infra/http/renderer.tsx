@@ -27,58 +27,60 @@ const syncLoadAssets = () => {
 };
 syncLoadAssets();
 
-const withAssets = () => (Component: FunctionComponent) => {
-  return ({ ...props }) => (
-    <>
-      <Helmet>
-        {js}
-        {css}
-        {process.env.NODE_ENV === "development" && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap"
-            rel="stylesheet"
-          />
-        )}
-      </Helmet>
-      <Component {...props} />
-    </>
-  );
-};
-
-const withTheme = (theme: any, cache: any) => (
-  Component: FunctionComponent
-) => {
-  return ({ ...props }) => (
-    <CacheProvider value={cache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+const withAssets =
+  () =>
+  (Component: FunctionComponent) =>
+  ({ ...props }): JSX.Element =>
+    (
+      <>
+        <Helmet>
+          {js}
+          {css}
+          {process.env.NODE_ENV === "development" && (
+            <link
+              href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap"
+              rel="stylesheet"
+            />
+          )}
+        </Helmet>
         <Component {...props} />
-      </ThemeProvider>
-    </CacheProvider>
-  );
-};
+      </>
+    );
 
-const withUser = (user: any) => (Component: FunctionComponent) => {
-  return ({ ...props }) => (
-    <AuthProvider user={user}>
-      <Component {...props} />
-    </AuthProvider>
-  );
-};
+const withTheme =
+  (theme: any, cache: any) =>
+  (Component: FunctionComponent) =>
+  ({ ...props }): JSX.Element =>
+    (
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...props} />
+        </ThemeProvider>
+      </CacheProvider>
+    );
 
-const withRouter = (url: string, context: Http) => (
-  Component: FunctionComponent
-) => {
-  return ({ ...props }): JSX.Element => {
-    return (
+const withUser =
+  (user: any) =>
+  (Component: FunctionComponent) =>
+  ({ ...props }): JSX.Element =>
+    (
+      <AuthProvider user={user}>
+        <Component {...props} />
+      </AuthProvider>
+    );
+
+const withRouter =
+  (url: string, context: Http) =>
+  (Component: FunctionComponent) =>
+  ({ ...props }): JSX.Element =>
+    (
       <HttpProvider context={context}>
         <StaticRouter location={url}>
           <Component {...props} />
         </StaticRouter>
       </HttpProvider>
     );
-  };
-};
 
 export default async function jsxEngine(
   path: string,

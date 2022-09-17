@@ -4,7 +4,7 @@ import getUserDBName from "@util/user_db_name";
 
 export { theme } from "theme";
 
-export async function erase({ format, render }) {
+export async function erase({ format, redirect }) {
   const users = await authDB();
   
   const { userCtx: { name }} = await users.session();
@@ -22,8 +22,6 @@ export async function erase({ format, render }) {
   }
 
   format({
-    "text/vnd.turbo-stream.html": () =>
-      render({ template: "Ejected" }),
-    "text/html": () => render({ template: "Redirect", to: "/" }),
+    "text/html": () => redirect("/"),
   });
 }

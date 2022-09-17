@@ -8,7 +8,7 @@ export function fresh({ format, render }) {
   });
 }
 
-export async function make({ format, render, params: { email, password}, req, next }) {
+export async function make({ format, redirect, params: { email, password }, req, next }) {
   register(email, password, (error: any, user?: any): void => {
     req.login(user, (error) => {
       if (error) {
@@ -16,9 +16,7 @@ export async function make({ format, render, params: { email, password}, req, ne
       }
   
       format({
-        "text/vnd.turbo-stream.html": () =>
-          render({ template: "Registered" }),
-        "text/html": () => render({ template: "Redirect", to: "/" }),
+        "text/html": () => redirect("/"),
       });
     });
   });

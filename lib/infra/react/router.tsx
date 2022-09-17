@@ -58,7 +58,7 @@ class Router {
   ) {
     const { only } = options;
 
-    [].concat(only).forEach((verb) => {
+    ([] as Verb[]).concat(only).forEach((verb) => {
       const { path, method } = verb;
       if (method === "get") {
         const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
@@ -77,18 +77,18 @@ class Router {
     }
   }
 
-  private authenticate(name: string, _verb: Verb) {
-    const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-    const component = require(`@app/screens/${componentName}`).default;
-    const route = new Route(name, { mappings: [name, component] });
-    this.routes.push(route);
+  private authenticate(_name: string, _verb: Verb) {
+    // const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+    // const component = require(`@app/screens/${componentName}`).default;
+    // const route = new Route(name, { mappings: [name, component] });
+    // this.routes.push(route);
   }
 
-  private eject(name: string, _verb: Verb) {
-    const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
-    const component = require(`@app/screens/${componentName}`).default;
-    const route = new Route(name, { mappings: [name, component] });
-    this.routes.push(route);
+  private eject(_name: string, _verb: Verb) {
+    // const componentName = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
+    // const component = require(`@app/screens/${componentName}`).default;
+    // const route = new Route(name, { mappings: [name, component] });
+    // this.routes.push(route);
   }
 
   private unauthenticated(builder: Builder) {

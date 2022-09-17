@@ -6,10 +6,8 @@ export function fresh({ format, render }) {
   });
 }
 
-export function make({ format, render }) {
+export function make({ format, redirect }) {
   format({
-    "text/vnd.turbo-stream.html": () =>
-      render({ template: "Authenticated" }),
-    "text/html": () => render({ template: "Redirect", to: "/" }),
+    "text/html": () => redirect("/"),
   });
 }
