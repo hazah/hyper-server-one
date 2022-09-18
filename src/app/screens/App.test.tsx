@@ -1,20 +1,26 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import App from "@app/screens/App";
+import { fireEvent, render } from "@testing-library/react";
 
 import i18n from "i18n";
+import App from "@app/screens/App";
+import AuthProvider from "@infra/AuthProvider";
 
 let getByText;
 let initialEntries: string[];
 
-const { homeTitle, aboutTitle } = i18n.getDataByLanguage("en").translation;
+const translation = i18n.getDataByLanguage("en").translation;
+const homeTitle = translation["/"];
+const aboutTitle = translation["/about"];
+
 
 beforeEach(() => {
   const renderResult = render(
-    <MemoryRouter initialEntries={initialEntries}>
-      <App />
-    </MemoryRouter>
+    <AuthProvider>
+      <MemoryRouter initialEntries={initialEntries}>
+        <App />
+      </MemoryRouter>
+    </AuthProvider>
   );
 
   getByText = renderResult.getByText;
