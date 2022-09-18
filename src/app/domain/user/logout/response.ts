@@ -1,10 +1,10 @@
 import Result, { Either } from "@core/result";
 
 import AppError from "@core/app_error";
-import Errors from "@app/domain/user/delete/errors";
+import Errors from "@app/domain/user/logout/errors";
 
 type Response = Either<
-  AppError.UnexpectedError | Errors.UserNotFoundError,
+  Errors.UserNotFoundOrDeleted | AppError.UnexpectedError,
   Result<void>
 >;
 

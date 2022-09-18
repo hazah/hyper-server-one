@@ -1,12 +1,11 @@
+import UseCaseError from "@core/use_case_error";
 import Result from "@core/result";
 
-import UseCaseError from "@core/use_case_error";
-
 namespace Errors {
-  export class UserNotFoundError extends Result<UseCaseError> {
+  export class UserNotFoundOrDeleted extends Result<UseCaseError> {
     constructor() {
       super(false, {
-        message: `User not found`,
+        message: `User not found or doesn't exist anymore.`,
       } as UseCaseError);
     }
   }
