@@ -8,11 +8,13 @@ import Email from "@app/domain/user/email";
 import Name from "@app/domain/user/name";
 import Password from "@app/domain/user/password";
 import Created from "@app/domain/user/created";
+import Deleted from "@app/domain/user/deleted";
 
 interface Props {
   email: Email;
   username: Name;
   password: Password;
+  isDeleted?: boolean;
 }
 
 export default class User extends AggregateRoot<Props> {
@@ -34,6 +36,13 @@ export default class User extends AggregateRoot<Props> {
 
   private constructor(props: Props, id?: UniqueEntityID) {
     super(props, id);
+  }
+
+  public delete(): void {
+    if (!this.props.isDeleted) {
+      this.addEvent(new Deleted(this));
+      this.props.isDeleted = true;
+    }
   }
 
   public static create(props: Props, id?: UniqueEntityID): Result<User> {

@@ -3,19 +3,19 @@ import ValueObject from "@domain/value_object";
 import Guard from "@core/guard";
 import Result from "@core/result";
 
-export interface Props {
+interface Properties {
   value: string;
   hashed?: boolean;
 }
 
-export default class Password extends ValueObject<Props> {
+export default class Password extends ValueObject<Properties> {
   public static minLength: number = 6;
 
-  get value(): string {
+  public get value(): string {
     return this.props.value;
   }
 
-  private constructor(props: Props) {
+  private constructor(props: Properties) {
     super(props);
   }
 
@@ -70,7 +70,7 @@ export default class Password extends ValueObject<Props> {
     });
   }
 
-  public static create(props: Props): Result<Password> {
+  public static create(props: Properties): Result<Password> {
     const propsResult = Guard.againstNullOrUndefined(props.value, "password");
 
     if (propsResult.isFailure) {

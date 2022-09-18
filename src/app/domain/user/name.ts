@@ -3,11 +3,11 @@ import Result from "@core/result";
 import ValueObject from "@domain/value_object";
 import Guard from "@core/guard";
 
-interface Props {
+interface Properties {
   name: string;
 }
 
-export default class Name extends ValueObject<Props> {
+export default class Name extends ValueObject<Properties> {
   public static maxLength: number = 15;
   public static minLength: number = 2;
 
@@ -15,11 +15,11 @@ export default class Name extends ValueObject<Props> {
     return this.props.name;
   }
 
-  private constructor (props: Props) {
+  private constructor (props: Properties) {
     super(props);
   }
 
-  public static create(props: Props): Result<Name> {
+  public static create(props: Properties): Result<Name> {
     const usernameResult = Guard.againstNullOrUndefined(props.name, 'username');
     if (usernameResult.isFailure) {
       return Result.fail<Name>(usernameResult.getErrorValue())

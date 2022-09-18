@@ -1,16 +1,16 @@
 import Result from "@core/result";
 import ValueObject from "@domain/value_object";
 
-export interface Props {
+interface Properties {
   value: string;
 }
 
-export default class Email extends ValueObject<Props> {
+export default class Email extends ValueObject<Properties> {
   get value(): string {
     return this.props.value;
   }
 
-  private constructor(props: Props) {
+  private constructor(props: Properties) {
     super(props);
   }
 
