@@ -1,7 +1,7 @@
 import UniqueEntityID from "@domain/unique_entity_id";
-import User from "@app/domain/user";
-import Email from "@app/domain/user/email";
-import Name from "@app/domain/user/name";
+import User from "@authentication/user";
+import Email from "@authentication/user/email";
+import Name from "@authentication/user/name";
 
 export default interface Repository {
   exists(email: Email | string): Promise<boolean>;

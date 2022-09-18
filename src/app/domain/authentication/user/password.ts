@@ -3,19 +3,19 @@ import ValueObject from "@domain/value_object";
 import Guard from "@core/guard";
 import Result from "@core/result";
 
-interface Properties {
+interface Props {
   value: string;
   hashed?: boolean;
 }
 
-export default class Password extends ValueObject<Properties> {
+export default class Password extends ValueObject<Props> {
   public static minLength: number = 6;
 
   public get value(): string {
     return this.props.value;
   }
 
-  private constructor(props: Properties) {
+  private constructor(props: Props) {
     super(props);
   }
 
@@ -44,6 +44,7 @@ export default class Password extends ValueObject<Properties> {
       //   if (err) return resolve(false);
       //   return resolve(compareResult);
       // });
+      return resolve(true);
     });
   }
 
@@ -70,7 +71,7 @@ export default class Password extends ValueObject<Properties> {
     });
   }
 
-  public static create(props: Properties): Result<Password> {
+  public static create(props: Props): Result<Password> {
     const propsResult = Guard.againstNullOrUndefined(props.value, "password");
 
     if (propsResult.isFailure) {

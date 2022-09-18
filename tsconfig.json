@@ -24,7 +24,8 @@
       "@components/*": ["app/components/*"],
       "@app/*": ["app/*"],
       "@client/*": ["client/*"],
-      "@server/*": ["server/*"]
+      "@server/*": ["server/*"],
+      "@authentication/*": ["app/domain/authentication/*"]
     }
   },
   "include": ["src"]

@@ -2,12 +2,12 @@ import Result, { left, right } from "@core/result";
 import AppError from "@core/app_error";
 import UseCase from "@core/use_case";
 
-import DTO from "@app/domain/user/logout/dto";
-import Errors from "@app/domain/user/logout/errors";
-import Response from "@app/domain/user/logout/response";
+import DTO from "@authentication/user/logout/dto";
+import Errors from "@authentication/user/logout/errors";
+import Response from "@authentication/user/logout/response";
 
-import Repository from "@app/domain/user/repository";
-import User from "@app/domain/user";
+import Repository from "@authentication/user/repository";
+import User from "@authentication/user";
 
 export class LogoutUseCase implements UseCase<DTO, Promise<Response>> {
   private userRepo: Repository;

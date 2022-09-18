@@ -1,7 +1,7 @@
 import Result, { Either } from "@core/result";
 
 import AppError from "@core/app_error";
-import Errors from "@app/domain/user/create/errors";
+import Errors from "@authentication/user/create/errors";
 
 type Response = Either<
   | Errors.EmailAlreadyExists

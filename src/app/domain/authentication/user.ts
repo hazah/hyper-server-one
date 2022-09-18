@@ -3,12 +3,12 @@ import Guard from "@core/guard";
 import Result from "@core/result";
 import UniqueEntityID from "@domain/unique_entity_id";
 
-import Id from "@app/domain/user/id";
-import Email from "@app/domain/user/email";
-import Name from "@app/domain/user/name";
-import Password from "@app/domain/user/password";
-import Created from "@app/domain/user/created";
-import Deleted from "@app/domain/user/deleted";
+import Id from "@authentication/user/id";
+import Email from "@authentication/user/email";
+import Name from "@authentication/user/name";
+import Password from "@authentication/user/password";
+import Created from "@authentication/user/created";
+import Deleted from "@authentication/user/deleted";
 
 interface Props {
   email: Email;

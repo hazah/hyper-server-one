@@ -27,7 +27,8 @@
       "^@infra/(.*)": "<rootDir>/src/lib/infra/$1",
       "^@util/(.*)": "<rootDir>/src/lib/util/$1",
       "^@components/(.*)": "<rootDir>/src/app/components/$1",
-      "^@app/(.*)": "<rootDir>/src/app/$1"
+      "^@app/(.*)": "<rootDir>/src/app/$1",
+      "^@authentication/(.*)": "<rootDir>/src/app/domain/authentication/$1"
     }
   },
   "dependencies": {

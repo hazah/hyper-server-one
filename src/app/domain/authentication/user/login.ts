@@ -2,16 +2,16 @@ import Result, { left, right } from "@core/result";
 import AppError from "@core/app_error";
 import UseCase from "@core/use_case";
 
-import DTO from "@app/domain/user/login/dto";
-import Errors from "@app/domain/user/login/errors";
-import ResponseDTO from "@app/domain/user/login/response/dto";
-import Response from "@app/domain/user/login/response";
+import DTO from "@authentication/user/login/dto";
+import Errors from "@authentication/user/login/errors";
+import ResponseDTO from "@authentication/user/login/response/dto";
+import Response from "@authentication/user/login/response";
 
-import Repository from "@app/domain/user/repository";
+import Repository from "@authentication/user/repository";
 
-import Password from "@app/domain/user/password";
-import Name from "@app/domain/user/name";
-import User from "@app/domain/user";
+import Password from "@authentication/user/password";
+import Name from "@authentication/user/name";
+import User from "@authentication/user";
 
 export class LoginUserUseCase implements UseCase<DTO, Promise<Response>> {
   private userRepo: Repository;

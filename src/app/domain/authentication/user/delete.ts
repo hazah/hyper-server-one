@@ -2,11 +2,11 @@ import Result, { left, right } from "@core/result";
 import AppError from "@core/app_error";
 import UseCase from "@core/use_case";
 
-import DTO from "@app/domain/user/delete/dto";
-import Errors from "@app/domain/user/delete/errors";
-import Response from "@app/domain/user/delete/response";
+import DTO from "@authentication/user/delete/dto";
+import Errors from "@authentication/user/delete/errors";
+import Response from "@authentication/user/delete/response";
 
-import Repository from "@app/domain/user/repository";
+import Repository from "@authentication/user/repository";
 
 export class Delete implements UseCase<DTO, Promise<Response>> {
   private repository: Repository;

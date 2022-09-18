@@ -2,16 +2,16 @@ import Result, { left, right } from "@core/result";
 import AppError from "@core/app_error";
 import UseCase from "@core/use_case";
 
-import DTO from "@app/domain/user/create/dto";
-import Errors from "@app/domain/user/create/errors";
-import Response from "@app/domain/user/create/response";
+import DTO from "@authentication/user/create/dto";
+import Errors from "@authentication/user/create/errors";
+import Response from "@authentication/user/create/response";
 
-import Repository from "@app/domain/user/repository";
+import Repository from "@authentication/user/repository";
 
-import Email from "@app/domain/user/email";
-import Password from "@app/domain/user/password";
-import Name from "@app/domain/user/name";
-import User from "@app/domain/user";
+import Email from "@authentication/user/email";
+import Password from "@authentication/user/password";
+import Name from "@authentication/user/name";
+import User from "@authentication/user";
 
 export class Create implements UseCase<DTO, Promise<Response>> {
   private repository: Repository;
