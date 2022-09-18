@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
-import authenticator from "../../src/client/auth";
+import authenticator from "@client/auth";
 
 type Auth = {
   authenticate: (username: string, password: string) => Promise<void>;

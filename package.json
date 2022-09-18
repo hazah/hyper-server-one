@@ -5,14 +5,14 @@
   "main": "main.js",
   "scripts": {
     "start:tsc": "tsc -b -w --preserveWatchOutput",
-    "start": "concurrently \"yarn start:tsc\" \"razzle start\"",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider concurrently \"yarn start:tsc\" \"razzle start\"",
     "desk": "electron .",
     "build": "tsc -b && razzle build --noninteractive",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
     "export": "razzle export",
     "clean": "rm -rf build/ cache/ storybook-static/",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider MODE='' start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "start:db": "sudo service couchdb start"
   },
@@ -28,6 +28,8 @@
       "^@util/(.*)": "<rootDir>/src/lib/util/$1",
       "^@components/(.*)": "<rootDir>/src/app/components/$1",
       "^@app/(.*)": "<rootDir>/src/app/$1",
+      "^@client/(.*)": "<rootDir>/src/client/$1",
+      "^@server/(.*)": "<rootDir>/src/server/$1",
       "^@authentication/(.*)": "<rootDir>/src/app/domain/authentication/$1"
     }
   },
@@ -107,6 +109,7 @@
     "postcss": "8.2.4",
     "razzle": "^4.0.4",
     "razzle-dev-utils": "^4.0.4",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "^4.0.3",
     "webpack": "^4.44.1",
     "webpack-cli": "^4.7.2",

@@ -8,7 +8,7 @@ interface ValueObjectProps {
  */
 
 export default abstract class ValueObject<T extends ValueObjectProps> {
-  public props: T;
+  public readonly props: T;
 
   constructor(props: T) {
     let baseProps: any = {
@@ -18,13 +18,13 @@ export default abstract class ValueObject<T extends ValueObjectProps> {
     this.props = baseProps;
   }
 
-  public equals(vo?: ValueObject<T>): boolean {
-    if (vo === null || vo === undefined) {
+  public equals(value?: ValueObject<T>): boolean {
+    if (value === null || value === undefined) {
       return false;
     }
-    if (vo.props === undefined) {
+    if (value.props === undefined) {
       return false;
     }
-    return JSON.stringify(this.props) === JSON.stringify(vo.props);
+    return JSON.stringify(this.props) === JSON.stringify(value.props);
   }
 }

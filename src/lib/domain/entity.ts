@@ -1,6 +1,10 @@
 import UniqueEntityID from "./unique_entity_id";
 
-export default abstract class Entity<T> {
+interface EntityProps {
+  [index: string]: any;
+}
+
+export default abstract class Entity<T extends EntityProps> {
   protected readonly _id: UniqueEntityID;
   public readonly props: T;
 

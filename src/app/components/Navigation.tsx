@@ -28,7 +28,7 @@ const Navigation = () => {
             </li>
             <li>
               <Access
-                user={{ email: "email@example.com" }}
+                user={user}
                 onSubmit={() => null}
               />
             </li>

@@ -4,9 +4,10 @@ import { Story, Meta } from "@storybook/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 
-import Access, { AccessProps } from "./Access";
+import Access from "@components/Access";
+import AccessProps from "@components/access/props";
 
-import theme from "../../theme";
+import theme from "theme";
 
 export default {
   component: Access,
