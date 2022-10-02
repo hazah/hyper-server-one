@@ -1,0 +1,26 @@
+import routes from "@infra/router";
+
+// NOTE: verb choce is based on avoiding conflicts with
+// keywords (cannot use 'new' or 'delete' for example.)
+
+// resource verbs:
+//
+// index, display, fresh, make, revise, amend, erase
+
+export default routes(
+  ({ root, resource, authenticated, eject, unauthenticated, verbs: { display } }) => {
+    root("home", display);
+    resource("about", { only: display });
+
+    unauthenticated(({ resource, authenticate, verbs: { fresh, make } }) => {
+      resource("register", { only: [fresh, make] });
+      resource("authenticate", { only: fresh });
+      authenticate("authenticate", make);
+    });
+
+    authenticated(({ resource, verbs: { erase, display } }) => {
+      resource("profile", { only: display });
+      eject("eject", erase);
+    });
+  }
+);
