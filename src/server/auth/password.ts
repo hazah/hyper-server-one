@@ -1,6 +1,6 @@
 import { Strategy } from "passport-local";
 import authDB from "@server/auth/db";
-import eventsDB from "@app/events/db";
+import eventsDB from "events/db";
 import getUserDBName from "@util/user_db_name";
 
 type Done = (error: any, user?: any) => void;

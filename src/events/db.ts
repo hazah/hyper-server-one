@@ -1,6 +1,6 @@
 import PouchDB from "pouchdb";
-import queriesDB from "@app/events/queries";
-import commandsDB from "@app/events/commands";
+import queriesDB from "events/queries";
+import commandsDB from "events/commands";
 
 let events: { [key: string]: PouchDB.Database<{}> } = {};
 
